@@ -1,0 +1,1 @@
+import{Ct as e,G as t,d as n}from"./ui-BPF0H6FS.js";var r=e();function i({what:e,onRetry:i}){return(0,r.jsx)(n,{tone:`crit`,title:`Não foi possível carregar ${e}.`,action:(0,r.jsx)(t,{size:`sm`,onClick:i,children:`Tentar de novo`}),children:`Confira a conexão. Se continuar, a fonte de dados pode estar fora do ar.`})}export{i as t};

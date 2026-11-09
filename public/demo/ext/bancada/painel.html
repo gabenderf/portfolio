@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Extensão das bancadas · demonstração</title>
+  <meta name="robots" content="noindex">
+  <!-- content.css é o arquivo real da extensão (upseller-extension), sem edição. -->
+  <link rel="stylesheet" href="content.css">
+  <style>
+    /* Só a página "ERP" de fundo é fictícia; o painel usa o CSS e a marcação reais. */
+    body { margin: 0; font: 14px/1.4 "Segoe UI", system-ui, sans-serif; background: #eef1f5; color: #1f2937; min-height: 100vh; }
+    .erp-top { height: 48px; background: #fff; border-bottom: 1px solid #e3e7ee; display: flex; align-items: center; gap: 18px; padding: 0 20px; }
+    .erp-top b { color: #3b5bdb; font-size: 16px; }
+    .erp-top span { color: #6b7280; font-size: 13px; }
+    .erp-main { padding: 20px; max-width: 760px; }
+    .erp-card { background: #fff; border: 1px solid #e3e7ee; border-radius: 8px; padding: 16px; }
+    .erp-card h1 { font-size: 15px; margin: 0 0 12px; }
+    .erp-scan { display: flex; gap: 8px; margin-bottom: 14px; }
+    .erp-scan input { flex: 1; padding: 9px 11px; border: 1px solid #cfd6e0; border-radius: 6px; font: inherit; }
+    .erp-scan button { padding: 9px 14px; border: 0; border-radius: 6px; background: #3b5bdb; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; color: #6b7280; font-weight: 600; padding: 8px; border-bottom: 1px solid #e3e7ee; background: #f8fafc; }
+    td { padding: 8px; border-bottom: 1px solid #f0f2f5; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+    tr.novo td { animation: flash 1.2s ease-out; }
+    @keyframes flash { from { background: #e7f5ff; } to { background: transparent; } }
+    .demo-bar { position: fixed; left: 20px; bottom: 20px; display: flex; gap: 8px; flex-wrap: wrap; max-width: calc(100% - 380px); }
+    .demo-bar button { padding: 8px 12px; border-radius: 999px; border: 1px solid #cfd6e0; background: #fff; font: 600 12px "Segoe UI", system-ui, sans-serif; cursor: pointer; }
+    .demo-bar button:hover { border-color: #3b5bdb; color: #3b5bdb; }
+    .demo-bar .hint { width: 100%; font-size: 11px; color: #6b7280; }
+    html, body { overflow: hidden; }
+    @media (max-width: 760px) { .erp-main { padding: 12px; max-width: calc(100% - 350px); min-width: 300px; } }
+  </style>
+</head>
+<body>
+  <div class="erp-top"><b>ERP</b><span>Expedição</span><span>›</span><span>Checkout · bipagem</span></div>
+  <main class="erp-main">
+    <div class="erp-card">
+      <h1>Verificar pedidos</h1>
+      <form class="erp-scan" id="scan">
+        <input id="rastreio" placeholder="Nº de rastreio" autocomplete="off">
+        <button>Verificar</button>
+      </form>
+      <table>
+        <thead><tr><th>Nº de Rastreio</th><th>Nº de Pedido</th><th>SKU</th><th>Total</th></tr></thead>
+        <tbody id="linhas"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="demo-bar">
+    <button type="button" id="bipar">Bipar etiqueta</button>
+    <button type="button" id="avancar">Avançar 30 min</button>
+    <button type="button" id="meta">Liderança define meta global 45/h</button>
+    <span class="hint">Demonstração: dados fictícios, sem conexão com banco.</span>
+  </div>
+
+  <!-- Marcação copiada de content.js (createFloatingPanel / showLogoutJustifications / showLoginOverlay). -->
+  <div id="upseller-ext-root" class="upseller-ext-container">
+    <div id="upseller-ext-floating-panel" class="upseller-ext-panel status-yellow">
+      <div class="upseller-ext-panel-header">
+        <span class="upseller-ext-panel-title"><span class="upseller-ext-pulse-dot"></span> Produtividade UpSeller</span>
+        <div style="display:flex;gap:4px">
+          <button id="ext-panel-btn-collapse" class="upseller-ext-btn-icon" title="Colapsar Panel">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="upseller-ext-panel-body" id="panel-body"></div>
+    </div>
+  </div>
+
+  <template id="tpl-stats">
+    <div class="upseller-ext-operator-row">
+      <div class="upseller-ext-operator-info">
+        <span id="ext-ui-op-name" class="upseller-ext-operator-name"></span>
+        <span id="ext-ui-op-details" class="upseller-ext-operator-details"></span>
+      </div>
+      <img src="logo-hope-white.svg" alt="Hope Cirúrgica" class="upseller-ext-brand-logo">
+    </div>
+    <div class="upseller-ext-stats-grid">
+      <div class="upseller-ext-stat-card"><div class="upseller-ext-stat-label">Pedidos Hoje</div><div id="ext-ui-stat-total" class="upseller-ext-stat-val">0</div></div>
+      <div class="upseller-ext-stat-card"><div class="upseller-ext-stat-label">Média / Hora</div><div id="ext-ui-stat-average" class="upseller-ext-stat-val">0.0</div></div>
+    </div>
+    <div class="upseller-ext-progress-container">
+      <div class="upseller-ext-progress-labels"><span>Progresso da Meta</span><span id="ext-ui-meta-desc" class="upseller-ext-meta-highlight"></span></div>
+      <div class="upseller-ext-progress-bar-bg"><div id="ext-ui-progress-fill" class="upseller-ext-progress-bar-fill" style="width:0%"></div></div>
+    </div>
+    <div id="ext-ui-feedback" class="upseller-ext-feedback-box"></div>
+    <div class="upseller-ext-actions" style="margin-top:8px">
+      <button id="ext-panel-btn-logout" class="upseller-ext-btn-logout"><span>Alterar Operador</span></button>
+    </div>
+  </template>
+
+  <template id="tpl-justificativa">
+    <div class="upseller-ext-modal-container">
+      <span class="upseller-ext-label" style="margin-bottom:5px">Selecione a Justificativa de Troca</span>
+      <button class="upseller-ext-justification-btn" data-just="Problema Técnico na Máquina">⚙️ Problema Técnico na Máquina</button>
+      <button class="upseller-ext-justification-btn" data-just="Troca de Turno / Almoço">🥪 Troca de Turno / Almoço</button>
+      <button class="upseller-ext-justification-btn" data-just="Remanejamento">🔄 Remanejamento</button>
+      <button id="ext-btn-cancel-logout" class="upseller-ext-btn upseller-ext-btn-secondary" style="margin-top:5px;padding:8px 12px;font-size:13px"><span>Cancelar</span></button>
+    </div>
+  </template>
+
+  <template id="tpl-login">
+    <div class="upseller-ext-overlay">
+      <div class="upseller-ext-card">
+        <div class="upseller-ext-badge-bancada">💻 Bancada 01</div>
+        <h2 class="upseller-ext-title">Identificação do Operador</h2>
+        <p class="upseller-ext-subtitle" id="login-sub"></p>
+        <div class="upseller-ext-form-group">
+          <label class="upseller-ext-label">Código (ID) do Operador</label>
+          <input type="number" id="ext-operator-id" class="upseller-ext-input" placeholder="Digite seu ID numérico..." value="202">
+        </div>
+        <button id="ext-btn-login" class="upseller-ext-btn"><span>Entrar no Sistema</span></button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // Simulação: mesma regra de média e faixas do content.js real, com dados fictícios.
+    const OPERADORES = { 201: 'Marina Teixeira', 202: 'Otávio Brandão', 203: 'Camila Rangel' };
+    const SKUS = ['1X-MASC-TRI-BR', '10X-LENC-CEL-70X50', '5X-LENC-TNT-COM', '3X-LENC-DESC-70X50', '2X-ALC-GEL-500'];
+    const s = { op: 201, total: 96, horas: 2.5, meta: 38, metaGlobal: null, seq: 142 };
+    const $ = (id) => document.getElementById(id);
+    const body = $('panel-body');
+    const panel = $('upseller-ext-floating-panel');
+
+    function renderStats() {
+      body.replaceChildren($('tpl-stats').content.cloneNode(true));
+      $('ext-panel-btn-logout').onclick = renderJustificativa;
+      atualizar();
+    }
+
+    function atualizar() {
+      if (!$('ext-ui-stat-total')) return;
+      const meta = s.metaGlobal ?? s.meta;
+      const media = s.total / Math.max(0.083, s.horas);
+      $('ext-ui-op-name').innerText = OPERADORES[s.op] || 'Operador ' + s.op;
+      $('ext-ui-op-details').innerText = `ID: ${s.op} | Bancada: Bancada 01`;
+      $('ext-ui-stat-total').innerText = s.total;
+      $('ext-ui-stat-average').innerText = media.toFixed(1);
+      $('ext-ui-meta-desc').innerText = `Meta de hoje: ${meta}/h`;
+      $('ext-ui-progress-fill').style.width = Math.min(100, Math.round(media / meta * 100)) + '%';
+      let cls = 'status-yellow', txt = 'É isso aí, você está na média! Continue assim 👍';
+      if (media > meta * 1.2) { cls = 'status-blue'; txt = 'Eita! Vai bater seu recorde hoje? 🔥'; }
+      else if (media > meta * 1.1) { cls = 'status-green'; txt = 'Parabéns, hoje você está um foguete! 🚀'; }
+      else if (media < meta * 0.95) { cls = 'status-red'; txt = 'Precisa acelerar um pouquinho. Você consegue 💪'; }
+      const collapsed = panel.classList.contains('collapsed');
+      panel.className = 'upseller-ext-panel ' + cls + (collapsed ? ' collapsed' : '');
+      $('ext-ui-feedback').innerText = txt;
+    }
+
+    function renderJustificativa() {
+      body.replaceChildren($('tpl-justificativa').content.cloneNode(true));
+      body.querySelectorAll('.upseller-ext-justification-btn').forEach((b) => (b.onclick = () => login(b.dataset.just)));
+      $('ext-btn-cancel-logout').onclick = renderStats;
+    }
+
+    function login(motivo) {
+      const root = $('upseller-ext-root');
+      root.appendChild($('tpl-login').content.cloneNode(true));
+      $('login-sub').innerHTML = `Troca de operador iniciada.<br><strong>Motivo:</strong> ${motivo}`;
+      const entrar = () => {
+        const id = Number($('ext-operator-id').value) || 202;
+        root.querySelector('.upseller-ext-overlay').remove();
+        Object.assign(s, { op: id, total: 0, horas: 0 });
+        renderStats();
+        toast(`Bem-vindo(a), ${OPERADORES[id] || 'operador ' + id}!`);
+      };
+      $('ext-btn-login').onclick = entrar;
+      $('ext-operator-id').onkeydown = (e) => e.key === 'Enter' && entrar();
+      $('ext-operator-id').focus();
+    }
+
+    function toast(msg) {
+      const t = document.createElement('div');
+      t.className = 'upseller-ext-toast toast-success';
+      t.innerHTML = `<span>✅</span><span></span>`;
+      t.lastChild.textContent = msg;
+      $('upseller-ext-root').appendChild(t);
+      setTimeout(() => t.classList.add('show'), 50);
+      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2600);
+    }
+
+    function bipar(rastreio) {
+      s.seq++;
+      const r = rastreio || `BR21${String(s.seq).padStart(7, '0')}${'ABCDE'[s.seq % 5]}`;
+      const tr = document.createElement('tr');
+      tr.className = 'novo';
+      tr.innerHTML = `<td></td><td>#UP100K${String(s.seq).padStart(6, '0')}</td><td>${SKUS[s.seq % SKUS.length]}</td><td>x 1</td>`;
+      tr.firstChild.textContent = r;
+      $('linhas').prepend(tr);
+      while ($('linhas').children.length > 7) $('linhas').lastChild.remove();
+      s.total++;
+      s.horas += 1.2 / 60;
+      atualizar();
+    }
+
+    for (let i = 0; i < 5; i++) bipar();
+    s.total = 96;
+    renderStats();
+
+    $('bipar').onclick = () => bipar();
+    $('scan').onsubmit = (e) => { e.preventDefault(); bipar($('rastreio').value.trim() || undefined); $('rastreio').value = ''; };
+    $('avancar').onclick = () => { s.horas += 0.5; atualizar(); };
+    $('meta').onclick = (e) => {
+      s.metaGlobal = s.metaGlobal ? null : 45;
+      e.target.textContent = s.metaGlobal ? 'Remover meta global' : 'Liderança define meta global 45/h';
+      atualizar();
+    };
+    $('ext-panel-btn-collapse').onclick = () => {
+      panel.classList.toggle('collapsed');
+      $('ext-panel-btn-collapse').innerHTML = panel.classList.contains('collapsed')
+        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>'
+        : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>';
+    };
+  </script>
+</body>
+</html>

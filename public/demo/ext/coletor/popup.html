@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coletor de Dados · demonstração</title>
+  <meta name="robots" content="noindex">
+  <!-- Marcação de popup.html e popup.css reais do coletor-fila; o script abaixo simula as respostas do service worker. -->
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    html { background: #dfe3ea; min-height: 100%; display: flex; justify-content: center; align-items: flex-start; padding: 24px 12px; box-sizing: border-box; }
+    body { border-radius: 10px; box-shadow: 0 12px 40px rgba(15, 23, 42, .28); }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Coletor de Dados</strong>
+    <span id="modo" class="tag"></span>
+  </header>
+
+  <section id="acesso" class="acesso" aria-live="polite"></section>
+
+  <button id="rodar" type="button">Coletar dados agora</button>
+  <p id="status" class="status">—</p>
+
+  <section id="resultado"></section>
+  <section id="previsao"></section>
+
+  <details id="log">
+    <summary>Histórico de coletas de dados <span id="log-resumo"></span></summary>
+    <div id="log-linhas"></div>
+  </details>
+
+  <footer><span id="proxima"></span> · <span id="versao"></span></footer>
+
+  <script>
+    // Demonstração com dados fictícios. Os textos e o HTML gerado seguem o popup.js real.
+    const $ = (id) => document.getElementById(id);
+    $('modo').textContent = 'produção';
+    $('versao').textContent = 'versão 0.2.0';
+    $('proxima').textContent = 'próxima coleta às 11:00';
+
+    const linha = (rotulo, valor, classe) => `<div class="linha"><span>${rotulo}</span><b class="${classe || ''}">${valor}</b></div>`;
+
+    function previsao(p) {
+      return `
+        <div class="titulo">obrigatório hoje</div>
+        ${linha('pedidos', p.obrig)}
+        ${linha('término', p.termino, 'bom')}
+        ${linha('ritmo necessário', p.ritmo + '/h')}
+        <div class="titulo">adiantando amanhã</div>
+        ${linha('pedidos', p.amanha)}
+        ${linha('se zerar tudo', p.tudo)}
+        ${linha('ritmo p/ zerar tudo', p.ritmoTudo + '/h')}
+        <div class="nota">${p.ociosas}h-pessoa ociosas se parar no obrigatório</div>`;
+    }
+
+    function resultado(r) {
+      return r.map((x) => `<div class="linha ${x.ok ? 'bom' : 'ruim'}"><span>${x.etapa}</span><b>${x.det}</b></div>`).join('');
+    }
+
+    const HIST = [
+      ['07:59', 'para enviar 8/8 · para imprimir 1004/1004', false],
+      ['09:00', 'para enviar 3/3 · para imprimir 931/931', false],
+      ['10:00', 'para imprimir 786/940 (janela oculta)', true],
+      ['10:04', 'para imprimir 792/792', false],
+    ];
+    function log() {
+      const falhas = HIST.filter((h) => h[2]).length;
+      $('log-resumo').textContent = falhas ? `(${falhas} com falha)` : `(${HIST.length})`;
+      $('log-resumo').className = falhas ? 'ruim' : '';
+      $('log-linhas').innerHTML = HIST.slice().reverse().map((h) => `<div class="log-linha ${h[2] ? 'ruim' : ''}"><span>${h[0]}</span><b>${h[1]}</b></div>`).join('');
+    }
+
+    function estadoInicial() {
+      $('status').textContent = 'última coleta de dados às 10:04, tudo certo';
+      $('status').className = 'status bom';
+      $('resultado').innerHTML = resultado([{ etapa: 'para enviar', ok: true, det: '5 / 5' }, { etapa: 'para imprimir', ok: true, det: '792 / 792' }]);
+      $('previsao').innerHTML = previsao({ obrig: 418, termino: '14:35 – 16:20', ritmo: 35, amanha: 379, tudo: 'não fecha no turno', ritmoTudo: 43.2, ociosas: 6.5 });
+      log();
+    }
+
+    $('rodar').onclick = () => {
+      const btn = $('rodar');
+      btn.disabled = true;
+      $('status').className = 'status';
+      const passos = [
+        'iniciando…',
+        'para enviar: página 1/1 · 5 lidos',
+        'para imprimir: página 1/3 · 300 lidos',
+        'para imprimir: página 2/3 · 600 lidos',
+        'para imprimir: página 3/3 · 771 lidos',
+        'calculando a previsão…',
+      ];
+      passos.forEach((t, i) => setTimeout(() => ($('status').textContent = t), i * 650));
+      setTimeout(() => {
+        const h = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        $('status').textContent = `última coleta de dados às ${h}, tudo certo`;
+        $('status').className = 'status bom';
+        $('resultado').innerHTML = resultado([{ etapa: 'para enviar', ok: true, det: '5 / 5' }, { etapa: 'para imprimir', ok: true, det: '771 / 771' }]);
+        $('previsao').innerHTML = previsao({ obrig: 397, termino: '14:20 – 16:00', ritmo: 35, amanha: 379, tudo: 'não fecha no turno', ritmoTudo: 42.6, ociosas: 7 });
+        HIST.push([h, 'para enviar 5/5 · para imprimir 771/771', false]);
+        log();
+        btn.disabled = false;
+      }, passos.length * 650 + 300);
+    };
+
+    function acesso(estado) {
+      const box = $('acesso');
+      box.replaceChildren();
+      box.className = 'acesso';
+      const p = (t, c) => { const n = document.createElement('p'); n.textContent = t; if (c) n.className = c; return n; };
+      const b = (t, fn, sec) => { const n = document.createElement('button'); n.type = 'button'; n.textContent = t; if (sec) n.className = 'secundario'; n.onclick = fn; return n; };
+      if (estado === 'codigo') {
+        const vale = new Date(Date.now() + 10 * 60000).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        box.append(p('Código de pareamento'), p('K7Q4-M2XD', 'codigo'),
+          p(`Aprove em Configurações > Dispositivos no Hope SaaS, com validade de 365 dias. Vale até ${vale}.`),
+          b('Cancelar', () => acesso('compartilhada'), true));
+        setTimeout(() => $('acesso').querySelector('.codigo') && acesso('pareado'), 5000);
+      } else if (estado === 'pareado') {
+        const h = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        box.append(p(`Acesso próprio desta máquina. Renovado às ${h}.`));
+      } else {
+        box.append(p('Usando a chave compartilhada (provisório). Pareie esta máquina antes do corte.'),
+          b('Parear esta máquina', () => acesso('codigo'), true));
+      }
+    }
+
+    estadoInicial();
+    acesso('compartilhada');
+  </script>
+</body>
+</html>

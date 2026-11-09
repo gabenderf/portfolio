@@ -1,0 +1,146 @@
+body {
+  width: 260px;
+  margin: 0;
+  padding: 14px;
+  background: #1f2430;
+  color: #e8eaed;
+  font: 12px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+header strong { font-size: 13px; }
+
+.tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #3a4152;
+  color: #b8c0d0;
+}
+
+.tag-aviso { background: #6b5417; color: #ffd479; }
+
+button {
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: #24a8b2;          /* teal da Hope */
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: #2bbcc7; }
+button:disabled { opacity: .5; cursor: default; }
+
+.status {
+  margin: 10px 0 0;
+  color: #9aa3b5;
+}
+
+.bom  { color: #4ade80; }
+.ruim { color: #f87171; font-weight: 600; }
+
+section { margin-top: 10px; }
+
+.linha {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-top: 1px solid #2c3242;
+}
+
+.linha span { color: #9aa3b5; text-transform: capitalize; }
+
+.titulo {
+  margin: 12px 0 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #7b8497;
+}
+
+.nota, .aviso {
+  margin-top: 8px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  background: #2c3242;
+  color: #b8c0d0;
+}
+
+.aviso { background: #46212a; color: #ffb3ba; }
+
+#log {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #2c3242;
+}
+
+#log summary {
+  cursor: pointer;
+  color: #9aa3b5;
+  font-size: 11px;
+  list-style: none;
+}
+
+#log summary::-webkit-details-marker { display: none; }
+#log summary::before { content: '▸ '; }
+#log[open] summary::before { content: '▾ '; }
+
+#log-linhas {
+  margin-top: 6px;
+  max-height: 190px;
+  overflow-y: auto;
+}
+
+.log-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 11px;
+  color: #9aa3b5;
+}
+
+.log-linha b { color: #b8c0d0; font-weight: 500; text-align: right; }
+.log-linha.ruim, .log-linha.ruim b { color: #f87171; }
+
+/* Acesso da máquina (acesso.js). */
+.acesso {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #2c3242;
+  color: #b8c0d0;
+}
+
+.acesso.ruim { background: #46212a; color: #ffb3ba; }
+.acesso p { margin: 0; }
+.acesso p + p, .acesso p + button { margin-top: 6px; }
+.acesso .codigo {
+  font: 600 22px/1.2 ui-monospace, "Cascadia Mono", Consolas, monospace;
+  letter-spacing: .12em;
+  color: #e8eaed;
+}
+
+.acesso .motivo { font-size: 11px; opacity: .8; word-break: break-word; }
+.acesso button.secundario { background: #3a4152; }
+.acesso button.secundario:hover:not(:disabled) { background: #465066; }
+
+footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #2c3242;
+  color: #7b8497;
+  font-size: 11px;
+}

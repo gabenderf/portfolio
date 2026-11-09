@@ -1,0 +1,601 @@
+/* Importar Fonte Moderna */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ====================================================================
+   Reset e Configurações de Escopo da Extensão (Prefixados para evitar conflitos)
+   ==================================================================== */
+.upseller-ext-container {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.upseller-ext-container * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Animação de Pulsar */
+@keyframes upseller-ext-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes upseller-ext-pulse-status-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes upseller-ext-pulse-status-yellow {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+@keyframes upseller-ext-pulse-status-green {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@keyframes upseller-ext-pulse-status-blue {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+/* ====================================================================
+   Overlay de Bloqueio (Login e Configuração de Bancada)
+   ==================================================================== */
+.upseller-ext-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 49, 53, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2147483647;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.upseller-ext-card {
+  background: #0a3135;
+  border: 1px solid #155f66;
+  border-radius: 20px;
+  width: 420px;
+  padding: 35px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  color: #ebf7f8;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upseller-ext-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ebf7f8;
+  letter-spacing: -0.5px;
+}
+
+.upseller-ext-subtitle {
+  font-size: 14px;
+  color: #9ddbdf;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.upseller-ext-form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.upseller-ext-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9ddbdf;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.upseller-ext-input {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  background: #134d53 !important;
+  border: 1px solid #155f66 !important;
+  border-radius: 10px !important;
+  color: #ebf7f8 !important;
+  font-size: 16px !important;
+  font-family: inherit !important;
+  transition: all 0.2s ease !important;
+  outline: none !important;
+}
+
+.upseller-ext-input:focus {
+  border-color: #24a8b2 !important;
+  box-shadow: 0 0 0 2px rgba(36, 168, 178, 0.35) !important; /* anel de foco, sem desfoque */
+  background: #134d53 !important;
+}
+
+/* Remover botões de incremento/decremento (spin buttons) de input number */
+.upseller-ext-input::-webkit-outer-spin-button,
+.upseller-ext-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+.upseller-ext-input[type=number] {
+  -moz-appearance: textfield !important;
+}
+
+.upseller-ext-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: #24a8b2;
+  border: none;
+  border-radius: 10px;
+  color: #0a3135;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.upseller-ext-btn:hover {
+  background: #38b2bb;
+}
+
+.upseller-ext-btn:active {
+  transform: translateY(1px);
+}
+
+.upseller-ext-btn-secondary {
+  background: #134d53;
+  color: #ebf7f8;
+  border: 1px solid #155f66;
+}
+
+.upseller-ext-btn-secondary:hover {
+  background: #155f66;
+}
+
+.upseller-ext-badge-bancada {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #134d53;
+  border: 1px solid #155f66;
+  color: #9ddbdf;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ====================================================================
+   Painel Flutuante (Gamificação de Produtividade)
+   ==================================================================== */
+.upseller-ext-panel {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 320px;
+  background: #0a3135; /* teal-950 chapado: o contraste não depende da página atrás */
+  border: 1px solid #155f66;
+  border-radius: 16px;
+  color: #ebf7f8;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 999999;
+  /* Importante: NÃO usar "all" aqui. O arraste (content.js) escreve top/left a cada
+     movimento do mouse; transicionar essas propriedades faz o painel "correr atrás"
+     do cursor com atraso, dando sensação de lentidão/peso. */
+  transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* Estados de Status Neon do Painel */
+.upseller-ext-panel.status-red {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.upseller-ext-panel.status-yellow {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.upseller-ext-panel.status-green {
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.upseller-ext-panel.status-blue {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.upseller-ext-panel-header {
+  padding: 14px 16px;
+  background: #134d53;
+  border-bottom: 1px solid #155f66;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+}
+
+.upseller-ext-panel-header:active {
+  cursor: grabbing;
+}
+
+.upseller-ext-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.2px;
+}
+
+.upseller-ext-pulse-dot {
+  width: 10px;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-red .upseller-ext-pulse-dot {
+  background-color: #ef4444;
+  animation: upseller-ext-pulse-status-red 2s infinite;
+}
+
+.status-yellow .upseller-ext-pulse-dot {
+  background-color: #f59e0b;
+  animation: upseller-ext-pulse-status-yellow 2s infinite;
+}
+
+.status-green .upseller-ext-pulse-dot {
+  background-color: #10b981;
+  animation: upseller-ext-pulse-status-green 2s infinite;
+}
+
+.status-blue .upseller-ext-pulse-dot {
+  background-color: #3b82f6;
+  animation: upseller-ext-pulse-status-blue 2s infinite;
+}
+
+.upseller-ext-btn-icon {
+  background: transparent;
+  border: none;
+  color: #9ddbdf;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.upseller-ext-btn-icon:hover {
+  background: #155f66;
+  color: #ebf7f8;
+}
+
+.upseller-ext-panel-body {
+  padding: 16px;
+  transition: max-height 0.3s ease;
+  max-height: 400px;
+  cursor: grab;
+}
+
+.upseller-ext-panel-body:active {
+  cursor: grabbing;
+}
+
+.upseller-ext-panel.collapsed .upseller-ext-panel-body {
+  max-height: 0;
+  padding: 0;
+  border-bottom: none;
+  overflow: hidden;
+}
+
+.upseller-ext-operator-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.upseller-ext-operator-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* permite que o nome quebre/trunque em vez de espremer o logo */
+}
+
+.upseller-ext-operator-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #ebf7f8;
+}
+
+.upseller-ext-operator-details {
+  font-size: 12px;
+  color: #9ddbdf;
+}
+
+.upseller-ext-brand-logo {
+  height: 20px;
+  width: auto;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+/* Layout de Estatísticas */
+.upseller-ext-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.upseller-ext-stat-card {
+  background: #134d53;
+  border: 1px solid #155f66;
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.upseller-ext-stat-label {
+  font-size: 11px;
+  color: #66c5cc;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.upseller-ext-stat-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ebf7f8;
+}
+
+/* Barra de Progresso da Meta */
+.upseller-ext-progress-container {
+  margin-bottom: 16px;
+}
+
+.upseller-ext-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #66c5cc;
+  margin-bottom: 4px;
+}
+
+.upseller-ext-meta-highlight {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9ddbdf;
+  letter-spacing: -0.1px;
+}
+
+.upseller-ext-progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #134d53;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.upseller-ext-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cores de status da gamificação (decisão de produto: não trocar). Chapadas, sem brilho. */
+.status-red .upseller-ext-progress-bar-fill {
+  background: #ef4444;
+}
+
+.status-yellow .upseller-ext-progress-bar-fill {
+  background: #f59e0b;
+}
+
+.status-green .upseller-ext-progress-bar-fill {
+  background: #10b981;
+}
+
+.status-blue .upseller-ext-progress-bar-fill {
+  background: #3b82f6;
+}
+
+/* Caixa de Feedback Motivacional */
+.upseller-ext-feedback-box {
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.status-red .upseller-ext-feedback-box {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.status-yellow .upseller-ext-feedback-box {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: #fde047;
+}
+
+.status-green .upseller-ext-feedback-box {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #a7f3d0;
+  font-weight: 600;
+}
+
+.status-blue .upseller-ext-feedback-box {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+/* Painel de Botões */
+.upseller-ext-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ====================================================================
+   Modal de Justificativa para Logout
+   ==================================================================== */
+.upseller-ext-modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.upseller-ext-justification-btn {
+  width: 100%;
+  padding: 10px 14px;
+  background: #134d53;
+  border: 1px solid #155f66;
+  border-radius: 8px;
+  color: #ebf7f8;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upseller-ext-justification-btn:hover {
+  background: #155f66;
+  border-color: #24a8b2;
+  color: #ebf7f8;
+  transform: translateX(2px);
+}
+
+/* ====================================================================
+   Notificações Flutuantes (Toast)
+   ==================================================================== */
+.upseller-ext-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #134d53;
+  border: 1px solid #155f66;
+  padding: 12px 18px;
+  border-radius: 8px;
+  color: #ebf7f8;
+  z-index: 2147483647;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.upseller-ext-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.upseller-ext-toast.toast-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(185, 28, 28, 0.9);
+}
+
+.upseller-ext-toast.toast-success {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(4, 120, 87, 0.9);
+}
+
+/* Botão Alterar Operador Discreto */
+.upseller-ext-btn-logout {
+  background: #134d53 !important;
+  color: #9ddbdf !important;
+  border: 1px solid #155f66 !important;
+  padding: 6px 12px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  width: auto !important;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upseller-ext-btn-logout:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+  opacity: 1;
+}
+
+
+/* Bancada pareada que perdeu o acesso (ver background.js, "Credencial própria por máquina") */
+.upseller-ext-alert-desconectada {
+  margin: 10px 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.upseller-ext-alert-desconectada[hidden] {
+  display: none;
+}

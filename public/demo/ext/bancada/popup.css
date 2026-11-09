@@ -1,0 +1,560 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Reset e Estrutura Global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #0a3135; /* teal-950: fundo petróleo da paleta Hope */
+  color: #ebf7f8;
+  width: 320px;
+  overflow: hidden;
+}
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+/* Cabeçalho */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #155f66;
+  padding-bottom: 10px;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ebf7f8;
+}
+
+.popup-badge {
+  background: #134d53;
+  border: 1px solid #155f66;
+  color: #9ddbdf;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popup-badge:hover {
+  background: #155f66;
+  border-color: #24a8b2;
+  color: #ebf7f8;
+  transform: translateY(-1px);
+}
+
+/* Corpo do Popup */
+.popup-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+}
+
+/* Perfil do Operador */
+.operator-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.operator-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #ebf7f8;
+}
+
+.operator-details {
+  font-size: 11px;
+  color: #66c5cc;
+}
+
+/* Grid de Estatísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  background: #134d53;
+  border: 1px solid #155f66;
+  border-radius: 10px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: #66c5cc;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ebf7f8;
+}
+
+/* Progresso da Meta */
+.progress-container {
+  margin-bottom: 14px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #66c5cc;
+  margin-bottom: 4px;
+}
+
+.popup-meta-highlight {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9ddbdf;
+  letter-spacing: -0.1px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: #134d53;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cores de status da gamificação (decisão de produto: não trocar). Chapadas, sem brilho. */
+.status-red .progress-bar-fill {
+  background: #ef4444;
+}
+
+.status-yellow .progress-bar-fill {
+  background: #f59e0b;
+}
+
+.status-green .progress-bar-fill {
+  background: #10b981;
+}
+
+.status-blue .progress-bar-fill {
+  background: #3b82f6;
+}
+
+/* Caixa de Feedback */
+.feedback-box {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.status-red .feedback-box {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+.status-yellow .feedback-box {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  color: #fde047;
+}
+
+.status-green .feedback-box {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
+  font-weight: 600;
+}
+
+.status-blue .feedback-box {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+/* Botão Alterar Operador Discreto */
+.btn-logout {
+  width: 100%;
+  background: #134d53;
+  color: #9ddbdf;
+  border: 1px solid #155f66;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  opacity: 1;
+}
+
+/* Painel de Justificativas */
+.justifications-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  animation: slideDown 0.2s ease-out;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #66c5cc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.justification-btn {
+  width: 100%;
+  padding: 8px 10px;
+  background: #134d53;
+  border: 1px solid #155f66;
+  border-radius: 6px;
+  color: #ebf7f8;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.justification-btn:hover {
+  background: #155f66;
+  border-color: #24a8b2;
+  color: #ebf7f8;
+}
+
+.justification-btn-cancel {
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px solid #155f66;
+  border-radius: 6px;
+  color: #9ddbdf;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.justification-btn-cancel:hover {
+  background: #134d53;
+}
+
+/* ESTADO INATIVO (BLOQUEADO) */
+.inactive-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+.inactive-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  background: #134d53;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #155f66;
+}
+
+.inactive-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ebf7f8;
+  margin-bottom: 6px;
+}
+
+.inactive-text {
+  font-size: 12px;
+  color: #66c5cc;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.instructions-box {
+  background: #134d53;
+  border: 1px solid #155f66;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  font-size: 11px;
+  color: #9ddbdf;
+  line-height: 1.5;
+}
+
+.instructions-box p {
+  margin-bottom: 4px;
+}
+
+.instructions-box p:last-child {
+  margin-bottom: 0;
+}
+
+.checkout-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #66c5cc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.checkout-link:hover {
+  color: #9ddbdf;
+  text-decoration: underline;
+}
+
+/* Rodapé */
+.popup-footer {
+  text-align: center;
+  margin-top: 14px;
+  border-top: 1px solid #155f66;
+  padding-top: 8px;
+  font-size: 9px;
+  color: #66c5cc;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: rgba(16, 185, 129, 0.95);
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 999;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.toast-error {
+  background: rgba(239, 68, 68, 0.95);
+}
+
+/* Animações */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ====================================================================
+   Acesso da bancada (pareamento com o Hope SaaS)
+   ==================================================================== */
+[hidden] {
+  display: none !important;
+}
+
+.pair-card {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #134d53;
+  border: 1px solid #155f66;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pair-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pair-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9ddbdf;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pair-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid #155f66;
+  color: #9ddbdf;
+  background: #0a3135;
+}
+
+/* Estado de conexão, não de desempenho: teal da marca (o verde fica só para a gamificação). */
+.pair-pill.is-ok {
+  color: #9ddbdf;
+  background: rgba(36, 168, 178, 0.14);
+  border-color: #24a8b2;
+}
+
+.pair-pill.is-wait {
+  color: #fde047;
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.pair-pill.is-off {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.pair-view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pair-text {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #9ddbdf;
+}
+
+.pair-text strong {
+  color: #ebf7f8;
+  font-weight: 600;
+}
+
+.pair-alert {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.pair-code {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 8px;
+  color: #ebf7f8;
+  background: #0a3135;
+  border: 1px solid #24a8b2;
+  user-select: all;
+}
+
+.pair-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #9ddbdf;
+}
+
+.pair-meta strong {
+  color: #ebf7f8;
+  font-variant-numeric: tabular-nums;
+}
+
+.pair-btn {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #24a8b2;
+  background: #24a8b2;
+  color: #0a3135;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pair-btn:hover {
+  background: #38b2bb;
+  border-color: #38b2bb;
+}
+
+.pair-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.pair-link {
+  align-self: center;
+  background: none;
+  border: none;
+  color: #66c5cc;
+  font-family: inherit;
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.pair-link:hover {
+  color: #fca5a5;
+}

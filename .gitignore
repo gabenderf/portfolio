@@ -1,0 +1,17 @@
+node_modules
+dist
+*.tsbuildinfo
+
+# Material interno: não vai para o repositório público
+docs/conteudo-projetos.md
+docs/DECISOES.md
+# design-system1: só a especificação e os tokens vão para o repositório público.
+# O protótipo (index.html) e o README dele têm projetos e contatos fictícios;
+# _inspect/ é captura de site de terceiros usada só para estudo visual.
+design-system1/*
+!design-system1/DESIGN_SYSTEM.md
+!design-system1/design-tokens.css
+!design-system1/tokens.json
+
+# Configuração local do Claude Code
+.claude/

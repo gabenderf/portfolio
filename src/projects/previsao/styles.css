@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Previsão: estilos exclusivos do projeto "previsao"
+   Escopo obrigatório: todas as regras começam com .mock--previsao
+   ========================================================================== */
+
+/* Layout: a navegação lateral vira uma faixa no topo para dar largura ao conteúdo */
+.mock--previsao { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
+.mock--previsao .mock__side {
+  flex-direction: row; align-items: center; gap: 0.2em; padding: 0.3em 0.6em;
+  border-right: 0; border-bottom: 1px solid rgb(255 255 255 / 0.08); overflow-x: auto; scrollbar-width: none;
+}
+.mock--previsao .mock__brand { margin: 0 0.8em 0 0; white-space: nowrap; color: #93c5fd; }
+.mock--previsao .mock__nav { white-space: nowrap; font-size: 0.8em; padding: 0.28em 0.6em; border-radius: 5px; }
+.mock--previsao .mock__nav[role="button"]:hover { color: #fff; background: rgb(255 255 255 / 0.05); }
+.mock--previsao .mock__nav[role="button"]:focus-visible,
+.mock--previsao button:focus-visible,
+.mock--previsao input:focus-visible,
+.mock--previsao g[role="button"]:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
+.mock--previsao .mock__main { overflow: hidden; }
+.mock--previsao .pv-body { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; }
+.mock--previsao .mock__ctrls[style] { padding: 0 !important; border: 0 !important; }
+.mock--previsao .pv-body > .mock__ctrls[style] { padding: 0.45em 0.8em !important; }
+.mock--previsao .pv-body > svg, .mock--previsao .pv-body > .pv-barra-ac, .mock--previsao .pv-body > .mock__note, .mock--previsao .pv-body > .pv-cal, .mock--previsao .pv-body > .pv-sim, .mock--previsao .pv-body > .pv-split--eq { flex: none; }
+.mock--previsao .k:empty { display: none; }
+.mock--previsao .pv-mudo { color: rgb(255 255 255 / 0.45); }
+.mock--previsao code { font-family: var(--font-mono); font-size: 0.9em; color: #7cc4ff; }
+
+/* Cenários e controles */
+.mock--previsao .pv-cenarios { padding: 0.45em 0.8em 0; }
+.mock--previsao .pv-preset { margin: 0.35em 0.8em 0; color: rgb(255 255 255 / 0.62); font-size: 0.92em; }
+.mock--previsao .pv-sim { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 0.9em; padding: 0.6em 0.8em 0.9em; }
+.mock--previsao .pv-sim__res { min-width: 0; }
+.mock--previsao .pv-sim__ctl { display: flex; flex-direction: column; gap: 0.55em; min-width: 0; }
+.mock--previsao .pv-campo { display: flex; flex-direction: column; gap: 0.2em; min-width: 0; }
+.mock--previsao .pv-campo__top { display: flex; justify-content: space-between; gap: 0.5em; color: rgb(255 255 255 / 0.62); font-size: 0.9em; }
+.mock--previsao .pv-campo__top b { font-family: var(--font-mono); font-weight: 400; color: #ebe8ef; }
+.mock--previsao input[type="range"] { width: 100%; accent-color: var(--c-accent-light); margin: 0; height: 1.4em; cursor: pointer; }
+.mock--previsao .pv-campo .mock__ctrls { gap: 0.25em; }
+
+/* KPIs e status */
+.mock--previsao .pv-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4em; }
+.mock--previsao .pv-kpi {
+  display: flex; flex-direction: column; gap: 0.1em; padding: 0.45em 0.55em; min-width: 0;
+  background: rgb(255 255 255 / 0.03); border: 1px solid rgb(255 255 255 / 0.08); border-radius: 8px;
+}
+.mock--previsao .pv-kpi strong { font-family: var(--font-mono); font-size: 1.45em; font-weight: 500; line-height: 1.15; }
+.mock--previsao .pv-kpi small { color: rgb(255 255 255 / 0.45); font-size: 0.78em; line-height: 1.25; }
+.mock--previsao .pv-status { margin: 0.4em 0 0; padding: 0.5em 0.65em; border-radius: 8px; border: 1px solid; font-size: 0.92em; }
+.mock--previsao .pv-status.ok { background: rgb(47 191 113 / 0.08); border-color: rgb(47 191 113 / 0.35); color: #b6efce; }
+.mock--previsao .pv-status.wait { background: rgb(245 165 36 / 0.1); border-color: rgb(245 165 36 / 0.4); color: #f8d9a0; }
+.mock--previsao .pv-status.bad { background: rgb(240 68 56 / 0.1); border-color: rgb(240 68 56 / 0.4); color: #f9b8b3; }
+.mock--previsao .pv-legenda { display: flex; flex-wrap: wrap; gap: 0.3em 1em; margin: 0.3em 0 0; padding: 0; list-style: none; color: rgb(255 255 255 / 0.55); font-size: 0.85em; }
+.mock--previsao .pv-legenda li { display: inline-flex; align-items: center; gap: 0.4em; }
+.mock--previsao .pv-sw { display: inline-block; width: 1.6em; height: 0; border-top: 2px solid; }
+.mock--previsao .pv-sw--p50 { border-color: #60a5fa; border-top-width: 3px; }
+.mock--previsao .pv-sw--p90 { border-color: rgb(255 255 255 / 0.7); border-top-style: dashed; }
+.mock--previsao .pv-sw--tudo { border-color: #93c5fd; border-top-style: dotted; border-top-width: 3px; }
+
+/* Gráficos SVG (unidades do viewBox) */
+.mock--previsao .pv-chart { display: block; width: 100%; height: auto; margin-top: 0.5em; }
+.mock--previsao .pv-grid { stroke: rgb(255 255 255 / 0.09); stroke-width: 1; }
+.mock--previsao .pv-grid--v { stroke-dasharray: 2 4; }
+.mock--previsao .pv-tick { fill: rgb(255 255 255 / 0.5); font-family: var(--font-mono); font-size: 12px; }
+.mock--previsao .pv-tick--b { font-size: 14px; fill: rgb(255 255 255 / 0.75); }
+.mock--previsao .pv-area { fill: rgb(37 99 235 / 0.22); }
+.mock--previsao .pv-faixa { fill: rgb(255 255 255 / 0.07); }
+.mock--previsao .pv-p50 { stroke: #60a5fa; stroke-width: 2.6; stroke-linejoin: round; }
+.mock--previsao .pv-p90 { stroke: rgb(255 255 255 / 0.7); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.mock--previsao .pv-tudo { stroke: #93c5fd; stroke-width: 2; stroke-dasharray: 1 4; stroke-linecap: round; }
+.mock--previsao .pv-cheg { fill: rgb(47 191 113 / 0.55); }
+.mock--previsao .pv-ocioso { fill: rgb(47 191 113 / 0.07); }
+.mock--previsao .pv-ocioso-t { fill: rgb(255 255 255 / 0.4); font-size: 12px; font-family: var(--font-sans); }
+.mock--previsao .pv-fim { stroke: #f5a524; stroke-width: 1.4; stroke-dasharray: 4 3; }
+.mock--previsao .pv-fim-t { fill: #f5a524; font-size: 12px; font-family: var(--font-mono); }
+.mock--previsao .pv-agora { stroke: rgb(255 255 255 / 0.35); stroke-width: 1; }
+.mock--previsao .pv-agora-t { fill: rgb(255 255 255 / 0.6); font-size: 12px; font-family: var(--font-mono); }
+.mock--previsao .pv-term { stroke: #60a5fa; stroke-width: 1.4; }
+.mock--previsao .pv-term--risco { stroke: #f5a524; }
+.mock--previsao .pv-dot { fill: #60a5fa; stroke: #0c0e14; stroke-width: 2; }
+.mock--previsao .pv-dot--risco { fill: #f5a524; }
+.mock--previsao .pv-term-t { fill: #93c5fd; font-size: 15px; font-weight: 600; font-family: var(--font-mono); }
+.mock--previsao .pv-term-t--risco { fill: #f5a524; }
+.mock--previsao .pv-nao-fecha { fill: #f04438; font-size: 14px; font-family: var(--font-mono); }
+
+/* Master-detail (falhas) e blocos de detalhe */
+.mock--previsao .pv-split { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); flex: 1; min-height: 0; }
+.mock--previsao .pv-split--eq { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); flex: none; }
+.mock--previsao .pv-lista { list-style: none; margin: 0; padding: 0; overflow: auto; border-right: 1px solid rgb(255 255 255 / 0.08); }
+.mock--previsao .pv-item {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0.1em; width: 100%; text-align: left;
+  padding: 0.5em 0.75em; background: transparent; border: 0; border-bottom: 1px solid rgb(255 255 255 / 0.06);
+  color: rgb(255 255 255 / 0.8); font: inherit; cursor: pointer; transition: background var(--dur-fast);
+}
+.mock--previsao .pv-item:hover { background: rgb(37 99 235 / 0.14); }
+.mock--previsao .pv-item.is-active { background: rgb(37 99 235 / 0.26); box-shadow: inset 2px 0 0 var(--c-accent-bright); }
+.mock--previsao .pv-item__t { font-weight: 500; }
+.mock--previsao .pv-item__v { font-family: var(--font-mono); font-size: 0.85em; color: rgb(255 255 255 / 0.55); }
+.mock--previsao .pv-item__v s { color: rgb(255 255 255 / 0.4); }
+.mock--previsao .pv-detalhe { padding: 0.7em 0.85em; min-width: 0; overflow: auto; }
+.mock--previsao .pv-detalhe .k { display: block; margin-top: 0.7em; }
+.mock--previsao .pv-detalhe .k:first-child { margin-top: 0; }
+.mock--previsao .pv-num { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.2em 0.7em; margin: 0.2em 0 0.1em; }
+.mock--previsao .pv-num__v { font-family: var(--font-mono); font-size: 1.9em; font-weight: 500; line-height: 1.1; }
+.mock--previsao .pv-num__v.is-riscado { color: #f5a524; }
+.mock--previsao .pv-num span { color: rgb(255 255 255 / 0.6); }
+.mock--previsao .pv-texto { margin: 0.3em 0 0; color: rgb(255 255 255 / 0.78); }
+.mock--previsao .pv-efeito { margin: 0.5em 0 0; padding: 0.4em 0.6em; border-left: 2px solid #f5a524; background: rgb(245 165 36 / 0.07); color: #f8d9a0; }
+.mock--previsao .pv-aviso { margin: 0.6em 0 0; padding: 0.4em 0.6em; border-left: 2px solid var(--c-accent-bright); background: rgb(9 67 160 / 0.2); color: rgb(255 255 255 / 0.8); }
+.mock--previsao .pv-acao { margin-top: 0.55em; }
+.mock--previsao .pv-detalhe .mock__note { margin-top: 0.7em; }
+.mock--previsao .pv-detalhe .mock__note p { margin: 0; }
+.mock--previsao .pv-barras { display: grid; gap: 0.25em; margin: 0.4em 0 0.2em; }
+.mock--previsao .pv-barra { height: 0.55em; background: rgb(255 255 255 / 0.07); border-radius: 3px; overflow: hidden; }
+.mock--previsao .pv-barra i { display: block; height: 100%; border-radius: 3px; }
+.mock--previsao .pv-barra__a { background: #f5a524; }
+.mock--previsao .pv-barra__b { background: #2fbf71; }
+
+/* Paridade */
+.mock--previsao .pv-barra-ac { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5em; padding: 0.5em 0.8em 0; }
+.mock--previsao .mock__filter-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.mock--previsao .pv-diagrama { display: block; width: 100%; height: auto; padding: 0.3em 0.8em 0; box-sizing: border-box; }
+.mock--previsao .pv-seta { fill: none; stroke: rgb(255 255 255 / 0.3); stroke-width: 1.6; stroke-dasharray: 4 4; }
+.mock--previsao .pv-seta-t { fill: rgb(255 255 255 / 0.45); font-size: 12px; font-family: var(--font-mono); }
+.mock--previsao .pv-no { cursor: pointer; }
+.mock--previsao .pv-no rect { fill: #10131b; stroke: rgb(255 255 255 / 0.2); stroke-width: 1.2; transition: stroke var(--dur-fast), fill var(--dur-fast); }
+.mock--previsao .pv-no:hover rect { fill: rgb(37 99 235 / 0.14); stroke: rgb(255 255 255 / 0.4); }
+.mock--previsao .pv-no.is-sel rect { fill: rgb(37 99 235 / 0.24); stroke: var(--c-accent-bright); stroke-width: 2; }
+.mock--previsao .pv-no.is-drift rect { stroke: #f04438; }
+.mock--previsao .pv-no__t { fill: #fff; font-size: 15px; font-weight: 600; font-family: var(--font-sans); }
+.mock--previsao .pv-no__c { fill: #7cc4ff; font-size: 11.5px; font-family: var(--font-mono); }
+.mock--previsao .pv-no__h { fill: rgb(255 255 255 / 0.5); font-size: 12px; font-family: var(--font-mono); }
+.mock--previsao .pv-badge rect { stroke-width: 1; }
+.mock--previsao .pv-badge text { font-size: 12px; font-family: var(--font-mono); }
+.mock--previsao .pv-badge--pendente rect { fill: #10131b; stroke: rgb(255 255 255 / 0.25); }
+.mock--previsao .pv-badge--pendente text { fill: rgb(255 255 255 / 0.6); }
+.mock--previsao .pv-badge--ok rect { fill: rgb(47 191 113 / 0.15); stroke: rgb(47 191 113 / 0.6); }
+.mock--previsao .pv-badge--ok text { fill: #7be0a8; }
+.mock--previsao .pv-badge--diverge rect { fill: rgb(240 68 56 / 0.15); stroke: rgb(240 68 56 / 0.7); }
+.mock--previsao .pv-badge--diverge text { fill: #f9a29b; }
+.mock--previsao .pv-hashes { width: 100%; margin-bottom: 0.2em; }
+.mock--previsao .pv-hashes th { padding-left: 0; }
+.mock--previsao .pv-hashes td { padding: 0.3em 0.5em; }
+.mock--previsao .pv-arqs { list-style: none; margin: 0.3em 0 0; padding: 0; display: grid; gap: 0.2em; }
+.mock--previsao .pv-arqs li { display: flex; justify-content: space-between; gap: 0.6em; }
+.mock--previsao .pv-chips { display: flex; flex-wrap: wrap; gap: 0.3em; list-style: none; margin: 0.7em 0 0; padding: 0; }
+.mock--previsao .pv-chips li { padding: 0.12em 0.5em; border: 1px solid rgb(255 255 255 / 0.18); border-radius: 999px; color: rgb(255 255 255 / 0.65); font-size: 0.82em; }
+.mock--previsao .pv-body > .mock__note { margin: 0.4em 0.8em 0.9em; }
+
+/* Calibração */
+.mock--previsao .pv-cal { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 0.9em; padding: 0.2em 0.8em 0; align-items: start; }
+.mock--previsao .pv-cal .pv-detalhe { padding: 0.6em 0 0; }
+.mock--previsao .pv-bar { cursor: pointer; }
+.mock--previsao .pv-hit { fill: transparent; }
+.mock--previsao .pv-bar__r { fill: rgb(96 165 250 / 0.45); stroke: rgb(96 165 250 / 0.7); stroke-width: 1; transition: fill var(--dur-fast); }
+.mock--previsao .pv-bar:hover .pv-bar__r { fill: rgb(96 165 250 / 0.65); }
+.mock--previsao .pv-bar.is-sel .pv-bar__r { fill: #2563eb; stroke: #93c5fd; stroke-width: 1.6; }
+.mock--previsao .pv-bar__v { fill: #ebe8ef; font-size: 14px; font-family: var(--font-mono); }
+.mock--previsao .pv-global { stroke: #f5a524; stroke-width: 1.2; stroke-dasharray: 5 4; }
+.mock--previsao .pv-global-t { fill: #f5a524; font-size: 12px; font-family: var(--font-mono); }
+
+/* Estreito: tudo em coluna única */
+@media (max-width: 720px) {
+  .mock--previsao .pv-sim,
+  .mock--previsao .pv-split,
+  .mock--previsao .pv-split--eq,
+  .mock--previsao .pv-cal { grid-template-columns: minmax(0, 1fr); }
+  .mock--previsao .pv-lista { border-right: 0; border-bottom: 1px solid rgb(255 255 255 / 0.08); max-height: 14em; }
+  .mock--previsao .pv-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Popup da extensão · demonstração</title>
+  <meta name="robots" content="noindex">
+  <!-- popup.html e popup.css são os arquivos reais da extensão; só o script no fim é de demonstração. -->
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    html { background: #dfe3ea; min-height: 100%; display: flex; justify-content: center; align-items: flex-start; padding: 24px 12px; }
+    body { border-radius: 10px; box-shadow: 0 12px 40px rgba(15, 23, 42, .28); }
+  </style>
+</head>
+<body>
+  <div class="popup-container" id="popup-root">
+    <!-- Cabeçalho -->
+    <div class="popup-header">
+      <h2 class="popup-title">Produtividade</h2>
+      <span class="popup-badge" id="popup-terminal-badge">💻 Carregando...</span>
+    </div>
+    
+    <!-- Corpo Dinâmico -->
+    <div class="popup-body">
+      
+      <!-- ESTADO: Operador Ativo (Dashboard) -->
+      <div id="session-active-card" style="display: none;">
+        <div class="operator-profile">
+          <span id="popup-operator-name" class="operator-name">Carregando...</span>
+          <span id="popup-operator-details" class="operator-details">ID: -- | Bancada: --</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Pedidos Hoje</div>
+            <div id="popup-stat-total" class="stat-val">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Média / Hora</div>
+            <div id="popup-stat-average" class="stat-val">0.0</div>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-labels">
+            <span>Progresso da Meta</span>
+            <span id="popup-meta-desc" class="popup-meta-highlight">Meta de hoje: --/h</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="popup-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div id="popup-feedback" class="feedback-box">
+          Carregando status...
+        </div>
+
+        <!-- Painel de Ações -->
+        <div class="actions-area">
+          <button id="popup-btn-logout-init" class="btn-logout">
+            Alterar Operador
+          </button>
+          
+          <div id="popup-justifications-panel" class="justifications-panel" style="display: none;">
+            <span class="form-label" style="text-align: center; margin-bottom: 8px;">Selecione a Justificativa</span>
+            <button class="justification-btn" data-just="Problema Técnico na Máquina">
+              ⚙️ Problema Técnico na Máquina
+            </button>
+            <button class="justification-btn" data-just="Troca de Turno / Almoço">
+              🥪 Troca de Turno / Almoço
+            </button>
+            <button class="justification-btn" data-just="Remanejamento">
+              🔄 Remanejamento
+            </button>
+            <button id="popup-btn-cancel-logout" class="justification-btn-cancel">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTADO: Nenhum Operador Ativo (Tela Bloqueada) -->
+      <div id="session-inactive-card" class="inactive-card" style="display: none;">
+        <div class="inactive-icon">🔒</div>
+        <h3 class="inactive-title">Terminal Bloqueado</h3>
+        <p class="inactive-text">
+          Nenhum operador identificado nesta bancada de trabalho.
+        </p>
+        <div class="instructions-box">
+          <p><strong>Para desbloquear:</strong></p>
+          <p>Abra a tela de checkout do UpSeller e digite seu ID para liberar o terminal:</p>
+          <a href="https://app.upseller.com/pt/order/scan-check" target="_blank" class="checkout-link">
+            Ir para Tela de Checkout 🔗
+          </a>
+        </div>
+      </div>
+
+      <!-- Acesso da bancada: conta própria por pareamento (Hope SaaS) -->
+      <section id="pair-card" class="pair-card" hidden>
+        <div class="pair-head">
+          <span class="pair-label">Acesso da bancada</span>
+          <span id="pair-pill" class="pair-pill"></span>
+        </div>
+
+        <!-- Não pareada: chave compartilhada, como sempre -->
+        <div id="pair-view-none" class="pair-view" hidden>
+          <p class="pair-text">Esta bancada usa a chave compartilhada. Pareie para ela ter acesso próprio.</p>
+          <button id="pair-btn-start" class="pair-btn">Parear bancada</button>
+        </div>
+
+        <!-- Código na tela, aguardando o admin -->
+        <div id="pair-view-code" class="pair-view" hidden>
+          <p class="pair-text">Peça a um admin para aprovar este código em <strong>Configurações › Dispositivos</strong> do Hope SaaS.</p>
+          <div id="pair-code" class="pair-code" aria-live="polite"></div>
+          <div class="pair-meta">
+            <span id="pair-wait">Aguardando aprovação…</span>
+            <span>expira em <strong id="pair-countdown">--:--</strong></span>
+          </div>
+          <button id="pair-btn-cancel" class="pair-link">Cancelar</button>
+        </div>
+
+        <!-- Código expirou ou deu erro -->
+        <div id="pair-view-retry" class="pair-view" hidden>
+          <p id="pair-retry-text" class="pair-text"></p>
+          <button id="pair-btn-retry" class="pair-btn">Pedir outro código</button>
+          <button id="pair-btn-dismiss" class="pair-link">Agora não</button>
+        </div>
+
+        <!-- Pareada -->
+        <div id="pair-view-ok" class="pair-view" hidden>
+          <p id="pair-ok-text" class="pair-text"></p>
+          <button id="pair-btn-unpair" class="pair-link">Desparear</button>
+        </div>
+
+        <!-- Pareada, mas a sessão foi recusada (revogada, vencida) -->
+        <div id="pair-view-off" class="pair-view" hidden>
+          <p class="pair-alert">Bancada desconectada, chame a liderança para parear de novo.</p>
+          <button id="pair-btn-repair" class="pair-btn">Parear de novo</button>
+          <button id="pair-btn-unpair-off" class="pair-link">Desparear</button>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Rodapé -->
+    <div class="popup-footer">
+      <span id="popup-version">UpSeller Productivity Extension</span>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Demonstração: dados fictícios; o pareamento é simulado (no real, o service worker fala com o Hope SaaS).
+    const $ = (id) => document.getElementById(id);
+    $('popup-terminal-badge').innerText = '💻 Bancada 01';
+    $('popup-version').innerText = 'UpSeller Productivity Extension v1.2.0';
+    $('session-active-card').style.display = 'block';
+    $('popup-operator-name').innerText = 'Marina Teixeira';
+    $('popup-operator-details').innerText = 'ID: 201 | Bancada: Bancada 01';
+    $('popup-stat-total').innerText = '142';
+    $('popup-stat-average').innerText = '45.3';
+    $('popup-meta-desc').innerText = 'Meta de hoje: 38/h';
+    $('popup-progress-fill').style.width = '100%';
+    $('popup-feedback').innerText = 'Parabéns, hoje você está um foguete! 🚀';
+    $('session-active-card').className = 'status-green';
+
+    $('popup-btn-logout-init').onclick = () => { $('popup-btn-logout-init').style.display = 'none'; $('popup-justifications-panel').style.display = 'flex'; };
+    $('popup-btn-cancel-logout').onclick = () => { $('popup-btn-logout-init').style.display = ''; $('popup-justifications-panel').style.display = 'none'; };
+    document.querySelectorAll('.justification-btn').forEach((b) => (b.onclick = () => { toast('Troca registrada: ' + b.dataset.just); $('popup-btn-cancel-logout').onclick(); }));
+
+    const views = { none: 'pair-view-none', code: 'pair-view-code', retry: 'pair-view-retry', ok: 'pair-view-ok', off: 'pair-view-off' };
+    function show(name, pill, cls) {
+      Object.entries(views).forEach(([k, id]) => ($(id).hidden = k !== name));
+      $('pair-pill').innerText = pill; $('pair-pill').className = ('pair-pill ' + (cls || '')).trim();
+      $('pair-card').hidden = false;
+    }
+    let timer = null, expira = 0;
+    function codigo() {
+      const abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = '';
+      for (let i = 0; i < 8; i++) c += abc[Math.floor(Math.random() * abc.length)];
+      return c.slice(0, 4) + '-' + c.slice(4);
+    }
+    function parear() {
+      $('pair-code').innerText = codigo();
+      $('pair-wait').innerText = 'Aguardando aprovação…';
+      expira = Date.now() + 10 * 60 * 1000;
+      clearInterval(timer);
+      const tick = () => { const t = Math.max(0, Math.round((expira - Date.now()) / 1000)); $('pair-countdown').innerText = Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+      tick(); timer = setInterval(tick, 1000);
+      show('code', 'Pareando', 'is-wait');
+      // Na demonstração, "o admin aprova" sozinho depois de alguns segundos.
+      setTimeout(() => { if ($('pair-view-code').hidden) return; $('pair-wait').innerText = 'Aprovado, concluindo…'; }, 4000);
+      setTimeout(() => {
+        if ($('pair-view-code').hidden) return;
+        clearInterval(timer);
+        const agora = new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        $('pair-ok-text').innerText = 'Conta própria desta máquina, pareada em ' + agora + '. Acesso renovado em ' + agora + '.';
+        show('ok', 'Pareada', 'is-ok');
+        toast('Bancada pareada');
+      }, 5500);
+    }
+    $('pair-btn-start').onclick = parear;
+    $('pair-btn-retry').onclick = parear;
+    $('pair-btn-repair').onclick = parear;
+    $('pair-btn-cancel').onclick = () => { clearInterval(timer); show('none', 'Chave compartilhada', ''); };
+    $('pair-btn-dismiss').onclick = () => show('none', 'Chave compartilhada', '');
+    $('pair-btn-unpair').onclick = () => show('none', 'Chave compartilhada', '');
+    $('pair-btn-unpair-off').onclick = () => show('none', 'Chave compartilhada', '');
+    show('none', 'Chave compartilhada', '');
+
+    function toast(msg) {
+      const t = $('toast'); t.innerText = msg; t.className = 'toast show';
+      clearTimeout(toast.h); toast.h = setTimeout(() => (t.className = 'toast'), 2400);
+    }
+  </script>
+</body>
+</html>
