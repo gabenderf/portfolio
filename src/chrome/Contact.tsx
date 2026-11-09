@@ -63,10 +63,13 @@ export function Contact() {
             </ul>
           </Reveal>
 
-          <p className="foot-name">
-            {f.name}
-            <span className="foot-name__surname">{f.surname}</span>
-          </p>
+          <div className="foot-id">
+            <img className="foot-id__photo" src="/gabriel.webp" alt={f.photoAlt} width={320} height={320} loading="lazy" decoding="async" />
+            <p className="foot-name">
+              {f.name}
+              <span className="foot-name__surname">{f.surname}</span>
+            </p>
+          </div>
           <div className="foot-row foot-row--bot" style={{ paddingTop: "1.25rem" }}>
             <div className="cluster" style={{ gap: "0.4rem" }}>
               {f.links.map((l) => (

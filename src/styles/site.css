@@ -75,7 +75,7 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
    aplicado em <main>, escurece o fundo aos poucos depois do hero. O rodapé
    continua o mesmo véu e o desfaz, sem emendas entre as seções. */
 main {
-  --veil: rgba(19, 21, 26, 0.62);
+  --veil: rgba(19, 21, 26, 0.74);
   background: linear-gradient(180deg, transparent 0, transparent calc(100dvh - 14rem), var(--veil) calc(100dvh + 18rem), var(--veil) 100%);
 }
 .band { padding-block: var(--space-section); background: transparent; }
@@ -250,7 +250,7 @@ main {
 
 .site-foot {
   min-height: 85vh; display: flex; align-items: flex-end; position: relative;
-  background: linear-gradient(180deg, rgba(19, 21, 26, 0.62) 0%, rgba(19, 21, 26, 0.3) 25%, transparent 55%);
+  background: linear-gradient(180deg, rgba(19, 21, 26, 0.74) 0%, rgba(19, 21, 26, 0.66) 45%, rgba(19, 21, 26, 0.3) 72%, transparent 92%);
 }
 .site-foot__wash {
   position: absolute; inset: 0; height: 100%;
@@ -417,6 +417,13 @@ main {
 .foot-name {
   margin: 0; font-family: var(--font-display); font-weight: 600;
   font-size: clamp(4rem, 14vw, 10.5rem); line-height: 0.85; letter-spacing: -0.045em;
+}
+.foot-id { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.25rem); }
+.foot-id__photo {
+  flex: none; width: clamp(4.5rem, 11vw, 8.5rem); height: auto; aspect-ratio: 1;
+  border-radius: 50%; object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16), 0 12px 32px -10px rgba(0, 0, 0, 0.6);
 }
 .foot-name__surname {
   display: block; margin-top: 0.6rem;

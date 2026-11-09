@@ -119,6 +119,7 @@ export interface SiteContent {
     links: NavLinkItem[];
     name: string;
     surname: string;
+    photoAlt: string;
     credit: string;
   };
 }
@@ -460,6 +461,7 @@ export const site: SiteContent = {
     ],
     name: "Gabriel",
     surname: "Anderson Filho",
+    photoAlt: "Foto de Gabriel Anderson Filho",
     credit: "Feito com Claude Code · 2026",
   },
 };
