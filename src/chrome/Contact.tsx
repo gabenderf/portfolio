@@ -63,7 +63,10 @@ export function Contact() {
             </ul>
           </Reveal>
 
-          <p className="foot-name">{f.name}</p>
+          <p className="foot-name">
+            {f.name}
+            <span className="foot-name__surname">{f.surname}</span>
+          </p>
           <div className="foot-row foot-row--bot" style={{ paddingTop: "1.25rem" }}>
             <div className="cluster" style={{ gap: "0.4rem" }}>
               {f.links.map((l) => (

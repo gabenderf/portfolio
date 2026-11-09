@@ -86,7 +86,9 @@ export function Nav() {
   return (
     <header className="site-nav">
       <a className="brand" href="#topo" onPointerEnter={shuffle}>
-        <span className="brand__name">{nav.brandName}</span>
+        <span className="brand__name">
+          {nav.brandName} <span className="brand__surname">{nav.brandSurname}</span>
+        </span>
         <span className="brand__meta t-micro">{meta}</span>
       </a>
       <button

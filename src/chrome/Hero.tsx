@@ -19,7 +19,7 @@ export function Hero() {
               <br />
               <em>{hero.titleLine2}</em>
             </h1>
-            <p className="t-body-lg hero-lead text-muted">{hero.lead}</p>
+            <p className="t-body-lg hero-lead">{hero.lead}</p>
             <div className="cluster">
               <Btn variant="white" icon="arrow" magnetic href={hero.primary.href}>
                 {hero.primary.label}

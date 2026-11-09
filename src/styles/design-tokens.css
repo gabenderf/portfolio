@@ -736,7 +736,7 @@
       animation-timeline: view();
       animation-range: exit 0% exit 100%;
     }
-    @keyframes sd-fade-out { to { opacity: 0; translate: 0 -8%; filter: blur(4px); } }
+    @keyframes sd-fade-out { to { opacity: 0; translate: 0 -8%; } }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -35,6 +35,7 @@ export interface ContactCard {
 export interface SiteContent {
   nav: {
     brandName: string;
+    brandSurname: string;
     brandMeta: string;
     menuLabel: string;
     sectionsLabel: string;
@@ -117,6 +118,7 @@ export interface SiteContent {
   footer: {
     links: NavLinkItem[];
     name: string;
+    surname: string;
     credit: string;
   };
 }
@@ -124,6 +126,7 @@ export interface SiteContent {
 export const site: SiteContent = {
   nav: {
     brandName: "Gabriel",
+    brandSurname: "Anderson Filho",
     brandMeta: "Operações · Automação · IA",
     menuLabel: "Menu",
     sectionsLabel: "Seções",
@@ -456,6 +459,7 @@ export const site: SiteContent = {
       { label: "Topo", href: "#topo" },
     ],
     name: "Gabriel",
+    surname: "Anderson Filho",
     credit: "Feito com Claude Code · 2026",
   },
 };

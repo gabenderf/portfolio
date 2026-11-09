@@ -38,6 +38,7 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
   font-family: var(--font-display); font-weight: 600; font-size: 1.35rem;
   letter-spacing: -0.03em; line-height: 1;
 }
+.brand__surname { font-weight: 400; color: var(--color-fg-muted); }
 .brand__meta { color: var(--color-fg-faint); }
 .nav-panel { display: flex; align-items: center; gap: 0.4rem; }
 .nav-toggle { display: none; }
@@ -45,11 +46,13 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
 
 .hero { position: relative; min-height: 100dvh; }
 .hero__wash {
-  position: absolute; left: 0; right: 0; top: 0; bottom: -16rem; pointer-events: none;
+  position: absolute; left: 0; right: 0; top: 0; bottom: -24rem; pointer-events: none;
   background:
     radial-gradient(95% 75% at 50% 68%, rgba(37, 99, 235, 0.28), rgba(9, 67, 160, 0.22) 48%, transparent 82%),
     linear-gradient(192deg, rgba(9, 67, 160, 0) 8%, rgba(9, 67, 160, 0.46) 56%, rgba(9, 67, 160, 0.28) 78%, rgba(19, 21, 26, 0) 100%);
   opacity: 0.88;
+  mask-image: linear-gradient(180deg, black 0%, black 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 55%, transparent 100%);
 }
 .hero .container {
   min-height: 100dvh;
@@ -59,19 +62,24 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
 }
 .hero__copy { max-width: var(--hero-copy-max); margin-top: auto; position: relative; display: grid; gap: 1.15rem; }
 .hero h1 {
+  font-weight: var(--fw-semibold);
   text-shadow: 0 4px 24px rgba(10, 14, 24, 0.55), 0 1px 3px rgba(10, 14, 24, 0.35);
 }
-.hero h1 em { font-style: normal; font-weight: 300; color: var(--color-fg-subtle); }
+.hero h1 em { font-style: normal; font-weight: var(--fw-light); color: var(--c-white); }
 .hero-lead {
-  max-width: 38rem;
+  max-width: 38rem; color: var(--c-white);
   text-shadow: 0 2px 14px rgba(10, 14, 24, 0.5);
 }
 
-.band { padding-block: var(--space-section); background: var(--c-black); }
-.work {
-  position: relative;
-  background: linear-gradient(180deg, rgba(19, 21, 26, 0) 0%, rgba(19, 21, 26, 0.58) 7rem, rgba(19, 21, 26, 0.92) 13rem, var(--c-black) 16.5rem);
+/* Ondas visíveis no site inteiro: as seções são transparentes e um único véu,
+   aplicado em <main>, escurece o fundo aos poucos depois do hero. O rodapé
+   continua o mesmo véu e o desfaz, sem emendas entre as seções. */
+main {
+  --veil: rgba(19, 21, 26, 0.62);
+  background: linear-gradient(180deg, transparent 0, transparent calc(100dvh - 14rem), var(--veil) calc(100dvh + 18rem), var(--veil) 100%);
 }
+.band { padding-block: var(--space-section); background: transparent; }
+.work { position: relative; }
 .band-head {
   display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: var(--space-8);
   padding: 0 var(--space-inset) var(--space-8);
@@ -242,7 +250,7 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
 
 .site-foot {
   min-height: 85vh; display: flex; align-items: flex-end; position: relative;
-  background: linear-gradient(180deg, var(--c-black) 0%, rgba(19, 21, 26, 0.6) 18%, transparent 45%);
+  background: linear-gradient(180deg, rgba(19, 21, 26, 0.62) 0%, rgba(19, 21, 26, 0.3) 25%, transparent 55%);
 }
 .site-foot__wash {
   position: absolute; inset: 0; height: 100%;
@@ -409,6 +417,11 @@ body { overflow-x: clip; background: var(--c-black); color: var(--color-fg); }
 .foot-name {
   margin: 0; font-family: var(--font-display); font-weight: 600;
   font-size: clamp(4rem, 14vw, 10.5rem); line-height: 0.85; letter-spacing: -0.045em;
+}
+.foot-name__surname {
+  display: block; margin-top: 0.6rem;
+  font-weight: 400; font-size: clamp(1.5rem, 4.2vw, 3.1rem); line-height: 1; letter-spacing: -0.03em;
+  color: var(--color-fg-muted);
 }
 .foot-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-bottom: 0.75rem; }
 

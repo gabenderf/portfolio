@@ -73,7 +73,7 @@ interface Point {
 /**
  * @param canvas   canvas de fundo
  * @param waveRoot elemento que recebe --x/--y (brilho que segue o cursor)
- * @param zones    seções em que as ondas ficam ativas (hero e rodapé); fora delas o loop pausa
+ * @param zones    áreas em que as ondas ficam ativas (main e rodapé); fora delas o loop pausa
  * @returns função de limpeza (remove listeners, observers e cancela o rAF)
  */
 export function createWaveEngine(canvas: HTMLCanvasElement, waveRoot: HTMLElement, zones: Element[]): () => void {
@@ -336,7 +336,7 @@ export function createWaveEngine(canvas: HTMLCanvasElement, waveRoot: HTMLElemen
       syncRun();
       if (reduce.matches && active.size) drawFrame(800, 0);
     },
-    { threshold: 0.12 },
+    { threshold: 0 },
   );
   zones.forEach((z) => zoneObs.observe(z));
 
