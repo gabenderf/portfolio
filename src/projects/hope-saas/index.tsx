@@ -25,7 +25,7 @@ const project: Project = {
   context: [
     "A operação expede de 700 a 1.500 pedidos por dia útil, quase todos de marketplace. O ERP que agrega os pedidos não mostra produtividade por operador nem a hora em que a fila do dia acaba. A liderança precisava dessas respostas, e de saber quem mudou uma meta e quando.",
     "O painel anterior era um site estático de protótipo, com bugs de fuso horário e duas fórmulas diferentes de ritmo com o mesmo nome. O Hope SaaS substitui esse painel com uma base sólida: permissões por perfil no banco, login com MFA, auditoria e pareamento de TV por código.",
-    "Estado atual: o sistema está validado de ponta a ponta num ambiente de teste e a migração para produção é o próximo passo. A demonstração ao lado roda inteira no seu navegador, com dados fictícios gerados na hora.",
+    "Estado atual: o sistema está em produção desde novembro de 2026, depois de validado de ponta a ponta num ambiente de teste, e convive com o painel antigo enquanto as máquinas do galpão passam para a credencial própria. A demonstração ao lado roda inteira no seu navegador, com dados fictícios gerados na hora.",
   ],
   concepts: [
     {

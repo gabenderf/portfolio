@@ -683,13 +683,25 @@ main {
 
 /* Como trabalho */
 .how-body { display: grid; gap: 1rem; padding-inline: var(--space-inset); }
-.how-role {
-  display: grid; gap: 0.6rem; max-width: 52rem;
+.how-intro {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 1.25rem;
   margin: 0 var(--space-inset) var(--space-8);
+}
+@media (max-width: 960px) { .how-intro { grid-template-columns: minmax(0, 1fr); } }
+.how-role {
+  display: grid; gap: 0.6rem; align-content: start;
   padding: 1.25rem 1.4rem; border-left: 2px solid var(--c-accent-bright);
   background: rgba(22, 25, 32, 0.55); border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-.how-role p:last-child { margin: 0; font-size: var(--fs-body-lg); line-height: var(--lh-body); color: var(--c-white); }
+.how-role > p { margin: 0; }
+.how-role > p + p { font-size: var(--fs-body-lg); line-height: var(--lh-body); color: var(--c-white); }
+.how-role--tool > p + p { font-size: var(--fs-body); color: var(--color-fg-muted); }
+.how-role__link {
+  justify-self: start; display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem;
+  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--c-accent-bright);
+}
+.how-role__link:hover { color: var(--c-white); }
 .how-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; position: relative; }
 .how-step {
   position: relative; display: grid; align-content: start; gap: 0.35rem; text-align: left;

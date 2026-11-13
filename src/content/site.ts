@@ -88,6 +88,7 @@ export interface SiteContent {
     siteLabel: string;
     castLabel: string;
     role: { label: string; text: string };
+    orchestration: { label: string; text: string; linkLabel: string; href: string };
     steps: {
       n: string;
       label: string;
@@ -173,8 +174,10 @@ export const site: SiteContent = {
     ],
     toolsLabel: "Ferramentas do dia a dia",
     tools: [
+      { name: "T3 Code", use: "orquestração de agentes de IA" },
       { name: "Claude Code", use: "desenvolvimento com agentes" },
       { name: "Antigravity", use: "desenvolvimento e revisão" },
+      { name: "Gemini e Deepseek", use: "revisão cruzada entre modelos" },
       { name: "Grok", use: "pesquisa e apoio" },
       { name: "n8n", use: "automações e integrações" },
       { name: "Supabase", use: "banco, login e permissões" },
@@ -289,6 +292,15 @@ export const site: SiteContent = {
         "Antes de qualquer linha de código, meu trabalho é entender a operação: onde o processo trava, como os marketplaces funcionam e o que a equipe precisa de verdade. " +
         "Depois defino o que o sistema deve entregar, como deve entregar e por quê. Os agentes escrevem o código. " +
         "Eu corrijo toda decisão genérica ou sem contexto e só aprovo o que resolve o problema real da empresa.",
+    },
+    orchestration: {
+      label: "Orquestração de agentes",
+      text:
+        "Para coordenar modelos de fornecedores diferentes, uso o T3 Code, um painel de código aberto que controla vários agentes de programação num lugar só. " +
+        "Cada frente roda numa conversa própria, numa cópia isolada do projeto, e dá para trocar de modelo no meio da tarefa: o Claude escreve, o Gemini revisa e o Deepseek confere. " +
+        "Eu acompanho as frentes em paralelo e reviso cada alteração antes de ela entrar no projeto.",
+      linkLabel: "Conhecer o T3 Code",
+      href: "https://github.com/pingdotgg/t3code",
     },
     steps: [
       {
@@ -456,12 +468,12 @@ export const site: SiteContent = {
         {
           state: "Em uso na operação",
           tone: "run",
-          text: "Extensão das bancadas, coletor da fila e motor de previsão rodam na expedição, na versão anterior da plataforma, em produção assistida.",
+          text: "Os cinco sistemas estão em produção na expedição. O Hope SaaS está no ar desde novembro de 2026, com permissões, MFA e auditoria no banco de produção, e lê as bipagens e as coletas de dados das extensões.",
         },
         {
-          state: "Validado em teste",
+          state: "Em transição",
           tone: "test",
-          text: "Hope SaaS, com permissões, MFA, auditoria e pareamento conferidos de ponta a ponta em ambiente de teste. A migração para produção é o próximo passo.",
+          text: "As máquinas do galpão estão passando para a credencial própria, pareada pelo painel, uma por vez e sem parar a expedição. O painel antigo segue no ar até o fim da troca.",
         },
         {
           state: "Nesta página",

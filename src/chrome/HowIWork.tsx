@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { site } from "../content/site";
 import { useRovingTabs } from "./useRovingTabs";
+import { Icon } from "./Icons";
 import { Reveal } from "./useReveal";
 
 export function HowIWork() {
@@ -25,10 +26,19 @@ export function HowIWork() {
             </Reveal>
           </header>
 
-          <Reveal className="how-role spotlight" index={2}>
-            <p className="t-label text-accent">{h.role.label}</p>
-            <p>{h.role.text}</p>
-          </Reveal>
+          <div className="how-intro">
+            <Reveal className="how-role spotlight" index={2}>
+              <p className="t-label text-accent">{h.role.label}</p>
+              <p>{h.role.text}</p>
+            </Reveal>
+            <Reveal className="how-role how-role--tool spotlight" index={3}>
+              <p className="t-label text-accent">{h.orchestration.label}</p>
+              <p>{h.orchestration.text}</p>
+              <a className="how-role__link" href={h.orchestration.href} target="_blank" rel="noopener noreferrer">
+                {h.orchestration.linkLabel} <Icon name="arrow" size={14} />
+              </a>
+            </Reveal>
+          </div>
 
           <div className="how-body">
             <div className="how-flow" role="tablist" aria-label={h.stepsLabel} onKeyDown={onKeyDown}>
