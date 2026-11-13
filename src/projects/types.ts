@@ -30,6 +30,8 @@ export interface Project {
   kicker: string;
   title: string;
   lead: string;
+  /** Antes, Depois e Resultado, em linguagem de negócio (aparece no card). */
+  story?: { before: string; after: string; result: string };
   context: string[];
   concepts: { title: string; text: string }[];
   stack: string[];

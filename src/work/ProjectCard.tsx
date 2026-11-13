@@ -33,6 +33,22 @@ export function ProjectCard({ project, stackIndex, onOpen }: Props) {
         <p className="project__kicker t-label text-accent">{project.kicker}</p>
         <h3 className="project__title t-h3">{project.title}</h3>
         <p className="project__lead">{project.lead}</p>
+        {project.story ? (
+          <dl className="project-story">
+            <div>
+              <dt className="t-label text-faint">Antes</dt>
+              <dd>{project.story.before}</dd>
+            </div>
+            <div>
+              <dt className="t-label text-faint">Depois</dt>
+              <dd>{project.story.after}</dd>
+            </div>
+            <div className="project-story__result">
+              <dt className="t-label text-accent">Resultado</dt>
+              <dd>{project.story.result}</dd>
+            </div>
+          </dl>
+        ) : null}
         <Stack items={project.stack} />
         <Metrics items={project.metrics} />
         <div className="project__actions cluster">

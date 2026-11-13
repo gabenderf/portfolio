@@ -15,7 +15,13 @@ const project: Project = {
   layout: "stack",
   kicker: "03 · Coleta de dados",
   title: "Coletor da fila",
-  lead: "Extensão que lê a fila de pedidos pendentes de um ERP sem exportação, confere o que leu contra o total da tela e grava a falha em vez de escondê-la. Alimenta a previsão do dia.",
+  lead: "Uma extensão que conta, sozinha, quantos pedidos e produtos precisam sair no dia, e alimenta a previsão.",
+  story: {
+    before: "A fila do dia era avaliada no olho. Calcular à mão, SKU por SKU e multiplicando os kits, tomava tempo demais.",
+    after:
+      "A extensão lê a fila de pendentes direto do ERP, que não exporta esses dados, e confere a leitura contra o total da tela. Se a leitura vier incompleta, ela registra a falha em vez de gravar um número errado.",
+    result: "A quantidade exata de pedidos e produtos que saem no dia. Na validação, foram 1.158 de 1.158 pedidos conferidos.",
+  },
   context: [
     "Para saber a que horas a fila do dia acaba, é preciso saber o que está pendente. Essa informação só existe nas telas do ERP, sem exportação utilizável em tempo real. O coletor lê essas telas, guarda cada leitura no banco e roda o motor de previsão.",
     "A lista do ERP só mostra cerca de 20 pedidos por vez na tela. A maior parte do trabalho foi descobrir como uma leitura pode parecer saudável e estar errada, e fazer cada um desses casos falhar de forma visível.",
@@ -45,7 +51,7 @@ const project: Project = {
     "Cada coleta vira um registro (ok, incompleto ou erro) com o motivo da parada.",
     "Com a leitura conferida, o motor de previsão calcula o término do dia.",
   ],
-  repo: null,
+  repo: "https://github.com/gabenderf/coletor-fila-demo",
   screens: [
     { id: "popup", label: "Popup", url: "chrome-extension / popup", hint: "Clique em Coletar dados agora", Component: Popup },
     { id: "rodada", label: "Como a leitura funciona", url: "simulação", hint: "Ligue uma falha e inicie a rodada", Component: RodadaScreen },

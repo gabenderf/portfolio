@@ -28,6 +28,8 @@ export interface ContactCard {
   ariaLabel: string;
   external: boolean;
   featured?: boolean;
+  /** Link de arquivo para baixar (atributo download). */
+  download?: boolean;
   /** Link ainda não definido: renderiza com data-todo e não navega. */
   todo?: boolean;
 }
@@ -85,6 +87,7 @@ export interface SiteContent {
     exampleLabel: string;
     siteLabel: string;
     castLabel: string;
+    role: { label: string; text: string };
     steps: {
       n: string;
       label: string;
@@ -93,8 +96,8 @@ export interface SiteContent {
       text: string;
       example: string;
       site: string;
-      /** índice em `cast` destacado quando a etapa está ativa. */
-      cast: number;
+      /** índices em `cast` destacados quando a etapa está ativa. */
+      cast: number[];
     }[];
     cast: { who: string; role: string }[];
   };
@@ -186,7 +189,7 @@ export const site: SiteContent = {
 
   work: {
     tag: "Projetos",
-    title: "Quatro sistemas, uma operação.",
+    title: "Cinco sistemas, uma operação.",
     lead:
       "Construí a Plataforma Hope para a expedição de um e-commerce que envia de 700 a 1.500 pedidos por dia. " +
       "As telas abaixo não são prints: são os próprios sistemas, em modo demonstração, com dados fictícios e sem conexão com o banco.",
@@ -280,28 +283,35 @@ export const site: SiteContent = {
     exampleLabel: "Na Plataforma Hope",
     siteLabel: "Neste portfólio",
     castLabel: "Quem fez este site",
+    role: {
+      label: "Meu papel",
+      text:
+        "Antes de qualquer linha de código, meu trabalho é entender a operação: onde o processo trava, como os marketplaces funcionam e o que a equipe precisa de verdade. " +
+        "Depois defino o que o sistema deve entregar, como deve entregar e por quê. Os agentes escrevem o código. " +
+        "Eu corrijo toda decisão genérica ou sem contexto e só aprovo o que resolve o problema real da empresa.",
+    },
     steps: [
       {
         n: "01",
-        label: "Contrato",
+        label: "Estudo",
         short: "Antes do código",
-        title: "O orquestrador escreve o contrato antes de qualquer agente começar.",
-        text: "Tipos, pastas, o que cada frente pode tocar e o que só muda com o orquestrador. Um agente que precisa de uma dependência nova pede, não adiciona.",
+        title: "Antes de qualquer agente começar, eu e o orquestrador estruturamos o projeto.",
+        text: "Eu entrego todo o contexto: o problema, o que eu preciso e como deve ser. O orquestrador transforma isso na documentação do projeto (tipos, pastas, o que cada frente pode tocar e o que só muda com ele) e cuida do resto. Um agente que precisa de uma dependência nova pede, não adiciona.",
         example:
-          "Arquivos de contrato que só mudam com o orquestrador; ESLint barrando acesso ao banco fora de três pastas; um CLAUDE.md por projeto com as decisões já tomadas, para ninguém repetir a discussão.",
-        site: "Um modelo orquestrador (Claude Opus) escreveu o contrato do site e dividiu o trabalho: um sistema por frente, cada um numa pasta própria.",
-        cast: 0,
+          "Arquivos de documentação que só mudam com o orquestrador; ESLint barrando acesso ao banco fora de três pastas; um CLAUDE.md por projeto com as decisões já tomadas, para ninguém repetir a discussão.",
+        site: "Eu passei o contexto e o que o site precisava mostrar; um modelo orquestrador (Claude Opus) escreveu a documentação do projeto e dividiu o trabalho: um sistema por frente, cada um numa pasta própria.",
+        cast: [0, 4],
       },
       {
         n: "02",
         label: "Execução",
         short: "Frentes em paralelo",
         title: "Cada agente executa uma frente, sem pisar na do outro.",
-        text: "As frentes rodam ao mesmo tempo. O contrato é o que permite juntar o resultado no fim sem reescrever nada.",
+        text: "As frentes rodam ao mesmo tempo. A documentação do projeto é o que permite juntar o resultado no fim sem reescrever nada.",
         example:
           "Trechos de segurança do Hope SaaS foram feitos por um agente dedicado, identificados como acréscimos no código, enquanto outras frentes seguiam.",
         site: "Agentes (Claude Sonnet) construíram cada sistema do portfólio em paralelo, cada um só dentro da própria pasta.",
-        cast: 1,
+        cast: [1],
       },
       {
         n: "03",
@@ -311,7 +321,7 @@ export const site: SiteContent = {
         text: "A revisão independente acha o que o autor não vê. Cada ponto encontrado é tratado ou justificado por escrito.",
         example: "Uma revisão independente do Hope SaaS encontrou 25 pontos; todos foram tratados.",
         site: "Um revisor de outro fornecedor (Gemini) revisou cada entrega antes de ela entrar no site.",
-        cast: 2,
+        cast: [2],
       },
       {
         n: "04",
@@ -322,7 +332,7 @@ export const site: SiteContent = {
         example:
           "Mais de 500 testes automatizados; 44 conferências de RLS e 75 de pareamento por perfil; testes de ponta a ponta com 42 e 32 conferências; paridade com o código antigo em ~4.500 SKUs.",
         site: "Cada agente checou tipos e abriu a própria seção no Chrome em 1440 e 390 px de largura, olhando captura de tela e console.",
-        cast: 1,
+        cast: [1],
       },
       {
         n: "05",
@@ -333,22 +343,22 @@ export const site: SiteContent = {
         example:
           "Arquivos .env fora do repositório; URL e chave de produção nunca em resposta, log ou documento; o corte da arquitetura inicial escrito com rollback no próprio SQL.",
         site: "Uma revisão final fechou o projeto: texto contra o briefing, conteúdo proibido e consistência entre as seções.",
-        cast: 3,
+        cast: [3],
       },
     ],
     cast: [
-      { who: "Claude Opus", role: "Orquestrador: contrato e divisão do trabalho" },
+      { who: "Claude Opus", role: "Orquestrador: documentação do projeto e divisão do trabalho" },
       { who: "Claude Sonnet", role: "Agentes: um sistema por frente, em paralelo" },
       { who: "Gemini", role: "Revisor de outro fornecedor, por entrega" },
-      { who: "Revisão final", role: "Fecha o projeto" },
-      { who: "Gabriel", role: "Produto: decisões, conteúdo e aprovação de cada entrega" },
+      { who: "Gabriel + Claude Fable", role: "Revisão final" },
+      { who: "Gabriel", role: "Produto e arquitetura: o problema, as regras de negócio, os critérios de teste e a aprovação de cada entrega" },
     ],
   },
 
   principles: {
     tag: "Princípios",
     title: "Como eu decido.",
-    lead: "Regras que aprendi na prática e que se repetem nos quatro projetos. Cada uma traz o projeto de onde saiu.",
+    lead: "Regras que aprendi na prática e que se repetem nos cinco projetos. Cada uma traz o projeto de onde saiu.",
     items: [
       {
         n: "01",
@@ -412,7 +422,7 @@ export const site: SiteContent = {
         icon: "github",
         handle: "@gabenderf",
         title: "GitHub",
-        desc: "O código deste portfólio e dos projetos que forem publicados.",
+        desc: "Código deste portfólio e versões de demonstração de cada sistema.",
         badge: "Ver repositórios",
         href: "https://github.com/gabenderf",
         ariaLabel: "GitHub de Gabriel (abre em nova aba)",
@@ -422,11 +432,22 @@ export const site: SiteContent = {
         icon: "x",
         handle: "@gbrandfl",
         title: "X",
-        desc: "Notas curtas sobre o que estou construindo com IA.",
+        desc: "Posts diários sobre o que estou construindo com IA.",
         badge: "Seguir",
         href: "https://x.com/gbrandfl",
         ariaLabel: "X de Gabriel (abre em nova aba)",
         external: true,
+      },
+      {
+        icon: "file",
+        handle: "PDF",
+        title: "Currículo",
+        desc: "Experiência, formação e ferramentas, em um arquivo para salvar ou imprimir.",
+        badge: "Baixar PDF",
+        href: "/curriculo-gabriel-anderson-filho.pdf",
+        ariaLabel: "Baixar o currículo de Gabriel em PDF",
+        external: false,
+        download: true,
       },
     ],
     status: {

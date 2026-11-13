@@ -15,7 +15,13 @@ const project: Project = {
   layout: "feature",
   kicker: "01 · Painel da liderança",
   title: "Hope SaaS",
-  lead: "O painel que a liderança da expedição usa para acompanhar o dia: pedidos separados, ritmo de cada operador contra a meta, previsão de término da fila e um Modo TV para o galpão. O que você vê ao lado é o sistema de verdade, em modo demonstração.",
+  lead: "O painel que a liderança da expedição usa para acompanhar o dia. O que você vê ao lado é o sistema de verdade, em modo demonstração.",
+  story: {
+    before: "O UpSeller só registra um log de atividades. O controle de produtividade era feito à mão, era impreciso e ninguém confiava nos números.",
+    after:
+      "A liderança acompanha o dia em tempo real, com pedidos separados, o ritmo de cada operador contra a meta e o horário previsto para a fila acabar. O Modo TV leva isso para o galpão.",
+    result: "A produtividade deixou de ser estimada e passou a ser medida pedido a pedido.",
+  },
   context: [
     "A operação expede de 700 a 1.500 pedidos por dia útil, quase todos de marketplace. O ERP que agrega os pedidos não mostra produtividade por operador nem a hora em que a fila do dia acaba. A liderança precisava dessas respostas, e de saber quem mudou uma meta e quando.",
     "O painel anterior era um site estático de protótipo, com bugs de fuso horário e duas fórmulas diferentes de ritmo com o mesmo nome. O Hope SaaS substitui esse painel com uma base sólida: permissões por perfil no banco, login com MFA, auditoria e pareamento de TV por código.",
@@ -51,11 +57,11 @@ const project: Project = {
     "Ritmo, meta efetiva e dia de São Paulo saem de módulos puros e testados.",
     "O banco aplica RLS por perfil e exige MFA; toda alteração gera auditoria.",
   ],
-  repo: null,
+  repo: "https://github.com/gabenderf/hope-saas-demo",
   demoUrl: `${HOPE_DEMO_BASE}expedicao`,
   screens: [
     { id: "visao-geral", label: "Visão Geral", url: "hope / expedição", hint: "Sistema real · navegue à vontade", Component: live("expedicao", "Hope SaaS: Visão Geral") },
-    { id: "previsao", label: "Previsão", url: "hope / expedição / previsão", hint: "Sistema real · modo demo", Component: live("expedicao/previsao", "Hope SaaS: Previsão") },
+    { id: "operadores", label: "Operadores", url: "hope / expedição / operadores", hint: "Sistema real · modo demo", Component: live("expedicao/operadores", "Hope SaaS: Operadores") },
     { id: "metas", label: "Metas", url: "hope / expedição / metas", hint: "Sistema real · modo demo", Component: live("expedicao/metas", "Hope SaaS: Metas") },
     { id: "modo-tv", label: "Modo TV", url: "hope / tv", hint: "A tela da TV do galpão", Component: live("tv", "Hope SaaS: Modo TV") },
   ],

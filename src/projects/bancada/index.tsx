@@ -18,7 +18,13 @@ const project: Project = {
   layout: "stack",
   kicker: "02 · Chão do galpão",
   title: "Extensão das bancadas",
-  lead: "Extensão de Chrome que roda em cada bancada de expedição: registra cada pedido bipado e mostra ao operador, em tempo real, o próprio ritmo contra a meta do dia.",
+  lead: "Uma extensão do navegador instalada em cada bancada da expedição, que mostra ao operador quanto ele já produziu no dia.",
+  story: {
+    before: "Os operadores queriam saber quanto estavam produzindo no dia, e o ERP não mostrava isso para eles.",
+    after:
+      "A extensão roda em cada bancada, registra cada pedido bipado e mostra ao operador o próprio ritmo contra a meta. Também virou a fonte de dados de toda a plataforma.",
+    result: "+43% de produtividade da equipe depois da implantação.",
+  },
   context: [
     "O ERP usado na expedição não mede produtividade: não há relatório por operador nem registro de quem bipou o quê. Sem esse dado, a liderança não tinha como acompanhar o ritmo do dia.",
     "Sem integração oficial disponível, a extensão roda dentro da tela de checkout de cada bancada e lê o que o ERP já mostra. Cada etiqueta bipada vira um registro com operador, bancada, pedido e itens, que alimenta o painel da liderança e a previsão.",
@@ -53,7 +59,7 @@ const project: Project = {
     "Cada máquina tem credencial própria, pareada por código no Hope SaaS.",
     "O painel da liderança lê os mesmos registros para ranking, relatórios e previsão.",
   ],
-  repo: null,
+  repo: "https://github.com/gabenderf/upseller-extension-demo",
   screens: [
     { id: "painel", label: "Painel flutuante", url: "erp / checkout", hint: "Clique em Bipar etiqueta", Component: Painel },
     { id: "popup", label: "Popup e pareamento", url: "chrome-extension / popup", hint: "Clique em Parear bancada", Component: Popup },

@@ -7,6 +7,7 @@ Mostra os sistemas que construí para a expedição de um e-commerce (Plataforma
 - **Hope SaaS**: o painel da liderança. É o próprio app, compilado em modo demo (dados gerados no navegador, login sem senha, sem banco), em `public/demo/hope`.
 - **Extensão das bancadas** e **Coletor da fila**: o HTML e o CSS reais das extensões de Chrome, com um script de demonstração no lugar do service worker, em `public/demo/ext`.
 - **Motor de previsão**: um simulador interativo do motor (ele não tem tela própria no sistema real).
+- **Gerador de etiquetas B2B**: uma etiqueta de exemplo no leiaute real, com dados fictícios. O código está em [etiquetas-nf-demo](https://github.com/gabenderf/etiquetas-nf-demo).
 
 Nenhum dado real da operação aparece e nada aqui fala com um backend.
 
@@ -51,4 +52,4 @@ Vite, React 19 e TypeScript (strict). CSS próprio, com os tokens do design syst
 
 ## Como foi feito
 
-Com agentes de IA orquestrados: um modelo orquestrador escreveu o contrato entre módulos, agentes construíram cada parte em paralelo, um revisor de outro fornecedor revisou cada entrega e uma revisão final fechou o projeto. A seção "Como trabalho" do site conta os detalhes.
+Com agentes de IA orquestrados: eu passei o contexto, um modelo orquestrador escreveu a documentação do projeto, agentes construíram cada parte em paralelo, um revisor de outro fornecedor revisou cada entrega e uma revisão final fechou o projeto. A seção "Como trabalho" do site conta os detalhes.

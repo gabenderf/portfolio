@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Etiquetas de Expedição - Hope Cirúrgica · Demonstração</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- PDF.js da Mozilla para leitura de DANFE em PDF diretamente no navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Painel Lateral de Controle -->
+        <aside class="sidebar">
+            <header class="app-header">
+                <div class="app-logo-hope">
+                    <img src="logohope.svg" alt="Hope Cirúrgica" class="header-hope-logo" />
+                </div>
+                <div class="app-title">
+                    <p>Gerador de Etiquetas de Expedição</p>
+                </div>
+            </header>
+
+            <!-- Abas de Modo (Nota Fiscal / Modo Livre) -->
+            <nav class="mode-tabs" role="tablist">
+                <button type="button" class="mode-tab active" id="tabNf" data-mode="nf" role="tab" aria-selected="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    Nota Fiscal
+                </button>
+                <button type="button" class="mode-tab" id="tabFree" data-mode="free" role="tab" aria-selected="false">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    Modo Livre
+                </button>
+            </nav>
+
+            <!-- ===================== MODO NOTA FISCAL ===================== -->
+            <div class="mode-panel" id="panelNf">
+
+            <!-- Importação de NF (PDF / XML) e Ações Rápidas -->
+            <div class="quick-actions-bar">
+                <input type="file" id="nfFileInput" accept=".pdf,.xml,application/pdf,text/xml,application/xml" style="display: none;">
+                <button type="button" class="btn btn-upload-nf" id="btnUploadNf" title="Selecione ou arraste o PDF ou XML da Nota Fiscal para preencher automaticamente">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <path d="M12 18v-6"></path>
+                        <path d="M9 15l3-3 3 3"></path>
+                    </svg>
+                    Carregar NF (PDF ou XML)
+                </button>
+                <div class="quick-actions-sub">
+                    <span class="file-hint" id="fileStatusHint">Preenche automaticamente cliente, NF e volumes</span>
+                    <button type="button" class="btn-link-sample" id="btnFillTestData" title="Preencher com um exemplo fictício">Usar Exemplo</button>
+                </div>
+            </div>
+
+            <!-- Seção 1: Dados do Cliente -->
+            <section class="control-section">
+                <h3 class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Cliente / Destinatário
+                </h3>
+                
+                <div class="client-search-wrapper">
+                    <input type="text" id="clientSearch" placeholder="Buscar cliente salvo (Nome, CNPJ ou Cidade)..." autocomplete="off">
+                    <div id="clientDropdown" class="client-dropdown-list"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientNome">Razão Social / Nome <span class="req">*</span></label>
+                    <input type="text" id="clientNome" placeholder="Ex: CLINICA EXEMPLO SAUDE LTDA">
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="clientCnpj">CNPJ / CPF <span class="req">*</span></label>
+                        <input type="text" id="clientCnpj" placeholder="00.000.000/0000-00" maxlength="18">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCep">CEP</label>
+                        <input type="text" id="clientCep" placeholder="00000-000" maxlength="9">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientLogradouro">Logradouro e Número</label>
+                    <input type="text" id="clientLogradouro" placeholder="Ex: RUA DAS FLORES, 123">
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="clientBairro">Bairro</label>
+                        <input type="text" id="clientBairro" placeholder="Ex: CENTRO">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCidadeUf">Cidade / UF</label>
+                        <input type="text" id="clientCidadeUf" placeholder="Ex: CIDADE EXEMPLO/SP">
+                    </div>
+                </div>
+
+                <div class="client-actions">
+                    <button type="button" class="btn btn-secondary btn-small" id="btnClearClient" title="Limpar campos do cliente">Limpar</button>
+                    <button type="button" class="btn btn-danger btn-small" id="btnDeleteClient" style="display: none;" title="Excluir cliente do cadastro">Excluir</button>
+                    <button type="button" class="btn btn-secondary btn-small btn-save-client" id="btnSaveClient" title="Salvar dados do cliente">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Salvar Cliente
+                    </button>
+                </div>
+            </section>
+
+            <!-- Seção 2: Dados do Volume e NF -->
+            <section class="control-section">
+                <h3 class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                    Dados do Volume e Rastreio
+                </h3>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="nfNumero">Número da NF</label>
+                        <input type="text" id="nfNumero" placeholder="Ex: 000.123">
+                    </div>
+                    <div class="form-group">
+                        <label for="volQty">Qtd. de Volumes</label>
+                        <input type="number" id="volQty" value="1" min="1" max="999">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Fabricação (FAB.)</label>
+                    <div class="form-group-row">
+                        <select id="fabMonth">
+                            <option value="JANEIRO">Janeiro</option>
+                            <option value="FEVEREIRO">Fevereiro</option>
+                            <option value="MARÇO">Março</option>
+                            <option value="ABRIL">Abril</option>
+                            <option value="MAIO">Maio</option>
+                            <option value="JUNHO">Junho</option>
+                            <option value="JULHO">Julho</option>
+                            <option value="AGOSTO">Agosto</option>
+                            <option value="SETEMBRO">Setembro</option>
+                            <option value="OUTUBRO">Outubro</option>
+                            <option value="NOVEMBRO">Novembro</option>
+                            <option value="DEZEMBRO">Dezembro</option>
+                        </select>
+                        <input type="text" id="fabYear" placeholder="AAAA" maxlength="4" style="text-align: center;">
+                    </div>
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="validadeText">Validade</label>
+                        <input type="text" id="validadeText" value="5 ANOS">
+                    </div>
+                    <div class="form-group">
+                        <label for="loteText">Lote</label>
+                        <div class="input-with-action">
+                            <input type="text" id="loteText" placeholder="Ex: 00000123">
+                            <button type="button" class="btn btn-secondary" id="btnGenLote" title="Gerar novo número de lote">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 3: Dimensões da Etiqueta Térmica -->
+            <section class="control-section">
+                <h3 class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M21 9H3M21 15H3M12 3v18"></path></svg>
+                    Tamanho da Etiqueta Térmica
+                </h3>
+                
+                <div class="form-group">
+                    <label for="labelPreset">Tamanho do Rolo / Etiqueta</label>
+                    <select id="labelPreset">
+                        <option value="60x30">60 x 30 mm (Padrão Hope - Modelo Oficial)</option>
+                        <option value="80x40">80 x 40 mm</option>
+                        <option value="100x50">100 x 50 mm (Volume Grande)</option>
+                        <option value="100x75">100 x 75 mm</option>
+                        <option value="100x150">100 x 150 mm (Padrão Envio / Correios)</option>
+                        <option value="custom">Personalizado (mm)...</option>
+                    </select>
+                </div>
+
+                <div class="form-group-row" id="customSizeRow" style="display: none;">
+                    <div class="form-group">
+                        <label for="customWidth">Largura (mm)</label>
+                        <input type="number" id="customWidth" value="60" min="20" max="300">
+                    </div>
+                    <div class="form-group">
+                        <label for="customHeight">Altura (mm)</label>
+                        <input type="number" id="customHeight" value="30" min="20" max="300">
+                    </div>
+                </div>
+            </section>
+
+            </div>
+
+            <!-- ===================== MODO LIVRE ===================== -->
+            <div class="mode-panel" id="panelFree" hidden>
+
+            <!-- Seção 1: Texto Livre -->
+            <section class="control-section">
+                <h3 class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                    Texto da Etiqueta
+                </h3>
+
+                <div class="free-toolbar" id="freeToolbar">
+                    <div class="tool-group">
+                        <button type="button" class="tool-btn" data-cmd="bold" title="Negrito (Ctrl+B)"><b>B</b></button>
+                        <button type="button" class="tool-btn" data-cmd="italic" title="Itálico (Ctrl+I)"><i>I</i></button>
+                        <button type="button" class="tool-btn" data-cmd="underline" title="Sublinhado (Ctrl+U)"><u>U</u></button>
+                    </div>
+                    <div class="tool-group">
+                        <button type="button" class="tool-btn" data-cmd="justifyLeft" title="Alinhar à esquerda">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
+                        </button>
+                        <button type="button" class="tool-btn" data-cmd="justifyCenter" title="Centralizar">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="5" y1="18" x2="19" y2="18"></line></svg>
+                        </button>
+                        <button type="button" class="tool-btn" data-cmd="justifyRight" title="Alinhar à direita">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="9" y1="12" x2="21" y2="12"></line><line x1="6" y1="18" x2="21" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="tool-group">
+                        <select id="freeSelSize" class="tool-select" title="Tamanho do texto selecionado">
+                            <option value="" selected disabled>Tamanho</option>
+                            <option value="2">Pequeno</option>
+                            <option value="3">Normal</option>
+                            <option value="5">Grande</option>
+                            <option value="6">Muito grande</option>
+                            <option value="7">Enorme</option>
+                        </select>
+                        <button type="button" class="tool-btn" data-cmd="removeFormat" title="Limpar formatação da seleção">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M5 20h6"></path><path d="M13 4 8 20"></path><line x1="15" y1="15" x2="21" y2="21"></line><line x1="21" y1="15" x2="15" y2="21"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="freeEditor" class="free-editor" contenteditable="true" spellcheck="false" data-placeholder="Digite aqui o texto da etiqueta..."></div>
+
+                <div class="form-group">
+                    <label>Posição vertical do texto</label>
+                    <div class="segmented" id="freeVAlign">
+                        <button type="button" data-valign="flex-start">Topo</button>
+                        <button type="button" data-valign="center" class="active">Centro</button>
+                        <button type="button" data-valign="flex-end">Base</button>
+                    </div>
+                </div>
+
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="freeFontSize">Tamanho base (pt)</label>
+                        <input type="number" id="freeFontSize" value="12" min="4" max="200" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="freeQty">Qtd. de cópias</label>
+                        <input type="number" id="freeQty" value="1" min="1" max="999">
+                    </div>
+                </div>
+
+                <label class="checkbox-row">
+                    <input type="checkbox" id="freeAutoFit">
+                    Ajustar tamanho automaticamente para preencher a etiqueta
+                </label>
+
+                <div class="free-overflow-warning" id="freeOverflowWarning" hidden>
+                    O texto está maior que a etiqueta e será cortado na impressão. Diminua o tamanho ou ative o ajuste automático.
+                </div>
+
+                <div class="client-actions">
+                    <button type="button" class="btn btn-secondary btn-small" id="btnClearFree" title="Apagar todo o texto">Limpar texto</button>
+                </div>
+            </section>
+
+            <!-- Seção 2: Dimensões da Etiqueta (Modo Livre) -->
+            <section class="control-section">
+                <h3 class="section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M21 9H3M21 15H3M12 3v18"></path></svg>
+                    Tamanho da Etiqueta Térmica
+                </h3>
+
+                <div class="form-group">
+                    <label for="freeLabelPreset">Tamanho do Rolo / Etiqueta</label>
+                    <select id="freeLabelPreset">
+                        <option value="60x30">60 x 30 mm</option>
+                        <option value="80x40">80 x 40 mm</option>
+                        <option value="100x50">100 x 50 mm</option>
+                        <option value="100x75">100 x 75 mm</option>
+                        <option value="100x150">100 x 150 mm (vertical)</option>
+                        <option value="150x100">150 x 100 mm (horizontal)</option>
+                        <option value="custom">Personalizado (mm)...</option>
+                    </select>
+                </div>
+
+                <div class="form-group-row" id="freeCustomSizeRow" style="display: none;">
+                    <div class="form-group">
+                        <label for="freeCustomWidth">Largura (mm)</label>
+                        <input type="number" id="freeCustomWidth" value="60" min="20" max="300">
+                    </div>
+                    <div class="form-group">
+                        <label for="freeCustomHeight">Altura (mm)</label>
+                        <input type="number" id="freeCustomHeight" value="30" min="20" max="300">
+                    </div>
+                </div>
+            </section>
+
+            </div>
+
+            <!-- Botão de Impressão -->
+            <button type="button" class="btn btn-primary btn-print" id="btnPrint">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="6 9 6 2 18 2 18 9"></polygon>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Imprimir Etiquetas
+            </button>
+        </aside>
+
+        <!-- Painel de Visualização à Direita -->
+        <main class="preview-pane">
+            <header class="preview-header">
+                <div>
+                    <h2>Pré-visualização das Etiquetas</h2>
+                    <span id="labelDimensionsBadge" class="dimensions-badge">60 × 30 mm</span>
+                </div>
+                <div class="preview-controls">
+                    <label for="previewScale">Zoom:</label>
+                    <input type="range" id="previewScale" min="2" max="10" step="0.5" value="6" title="Ajustar zoom do preview">
+                    <span id="scaleLabel" class="scale-label">6x</span>
+                </div>
+            </header>
+
+            <!-- Fila de Etiquetas Geradas -->
+            <div id="labelsCanvas" class="labels-canvas">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                        <line x1="9" y1="11" x2="15" y2="11"></line>
+                    </svg>
+                    <p>Preencha os dados do cliente à esquerda ou clique em <strong>"Carregar Modelo de Teste"</strong> para gerar a visualização das etiquetas.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- RECIPIENTE DE IMPRESSÃO (Oculto em tela, visível em @media print) -->
+    <div id="print-section"></div>
+
+    
+    
+    <script src="app.js"></script>
+    <script src="demo.js"></script>
+</body>
+</html>

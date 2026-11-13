@@ -8,6 +8,7 @@ import hopeSaas from "./hope-saas";
 import bancada from "./bancada";
 import coletor from "./coletor";
 import previsao from "./previsao";
+import etiquetas from "./etiquetas";
 // Exemplo mínimo do contrato (2 telas). Compila sempre; descomente a linha abaixo e a entrada no array para exibir.
 // import exemplo from "./_exemplo";
 
@@ -16,5 +17,6 @@ export const projects: Project[] = [
   bancada,
   coletor,
   previsao,
+  etiquetas,
   // exemplo,
 ];

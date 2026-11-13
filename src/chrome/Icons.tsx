@@ -1,4 +1,4 @@
-export type IconName = "arrow" | "github" | "linkedin" | "x" | "mail" | "sparkles";
+export type IconName = "arrow" | "github" | "linkedin" | "x" | "mail" | "sparkles" | "file";
 
 /** Sprite SVG (renderizado uma vez no App). As telas podem usar <Icon name="sparkles" />. */
 export function IconSprite() {
@@ -30,6 +30,12 @@ export function IconSprite() {
       <symbol id="i-mail" viewBox="0 0 20 20">
         <path
           d="M3.5 5h13a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5zm0 1.5v.35l6.5 4.33 6.5-4.33V6.5h-13zm13 8v-6.52l-6.1 4.07a.75.75 0 0 1-.8 0L3.5 7.98v6.52h13z"
+          fill="currentColor"
+        />
+      </symbol>
+      <symbol id="i-file" viewBox="0 0 20 20">
+        <path
+          d="M5.5 2h6.2L16 6.3V16.5A1.5 1.5 0 0 1 14.5 18h-9A1.5 1.5 0 0 1 4 16.5v-13A1.5 1.5 0 0 1 5.5 2zm0 1.5v13h9V7.5H11a.5.5 0 0 1-.5-.5V3.5h-5zm6.5.6V6h1.9L12 4.1zM7 10h6v1.4H7V10zm0 3h6v1.4H7V13z"
           fill="currentColor"
         />
       </symbol>

@@ -9,6 +9,7 @@ export function Nav() {
   const { nav } = site;
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState("topo");
+  const [scrolled, setScrolled] = useState(false);
   const [meta, setMeta] = useState(nav.brandMeta);
   const shuffleTimer = useRef(0);
   const shuffleStop = useRef(0);
@@ -25,6 +26,7 @@ export function Nav() {
         if (el && el.offsetTop <= y) cur = id;
       }
       setCurrent(cur);
+      setScrolled(window.scrollY > 24);
     };
     const onScroll = () => {
       if (!tick) {
@@ -84,7 +86,7 @@ export function Nav() {
   });
 
   return (
-    <header className="site-nav">
+    <header className="site-nav" data-scrolled={scrolled ? "" : undefined}>
       <a className="brand" href="#topo" onPointerEnter={shuffle}>
         <span className="brand__name">
           {nav.brandName} <span className="brand__surname">{nav.brandSurname}</span>

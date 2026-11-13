@@ -27,6 +27,7 @@ export function Contact() {
                   className={card.featured ? "contact-card contact-card--featured spotlight" : "contact-card spotlight"}
                   href={card.href}
                   {...(card.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(card.download ? { download: "" } : {})}
                   {...(card.todo
                     ? { "data-todo": "", "aria-disabled": true, onClick: (e: MouseEvent<HTMLAnchorElement>) => e.preventDefault() }
                     : { "data-magnetic": "" })}

@@ -25,6 +25,11 @@ export function HowIWork() {
             </Reveal>
           </header>
 
+          <Reveal className="how-role spotlight" index={2}>
+            <p className="t-label text-accent">{h.role.label}</p>
+            <p>{h.role.text}</p>
+          </Reveal>
+
           <div className="how-body">
             <div className="how-flow" role="tablist" aria-label={h.stepsLabel} onKeyDown={onKeyDown}>
               {h.steps.map((s, i) => (
@@ -77,7 +82,7 @@ export function HowIWork() {
               <p className="t-label text-faint how-cast__label">{h.castLabel}</p>
               <ul>
                 {h.cast.map((c, i) => (
-                  <li key={c.who} className="how-cast__item" data-on={activeCast === i ? "" : undefined}>
+                  <li key={c.who} className="how-cast__item" data-on={activeCast.includes(i) ? "" : undefined}>
                     <strong>{c.who}</strong>
                     <span>{c.role}</span>
                   </li>

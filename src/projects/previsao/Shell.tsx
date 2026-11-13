@@ -1,13 +1,11 @@
 import type { ReactNode } from "react";
 import { MockShell } from "../../work/mock";
 
-export type TelaId = "simulador" | "falhas" | "paridade" | "calibracao";
+export type TelaId = "simulador" | "falhas";
 
 const NAV: { id: TelaId; label: string }[] = [
-  { id: "simulador", label: "Simulador" },
+  { id: "simulador", label: "Como o motor funciona" },
   { id: "falhas", label: "Plausível e errado" },
-  { id: "paridade", label: "Uma função" },
-  { id: "calibracao", label: "Calibração" },
 ];
 
 interface Props {
@@ -18,7 +16,7 @@ interface Props {
   children: ReactNode;
 }
 
-/** Casca comum das quatro telas: navegação entre elas e corpo rolável. */
+/** Casca comum das simulações: navegação entre elas e corpo rolável. */
 export function PvShell({ ativa, go, title, controls, children }: Props) {
   return (
     <MockShell
